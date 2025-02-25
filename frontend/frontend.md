@@ -1,0 +1,1 @@
+This directory is for all frontend-related files. You can either replace it entirely with your own `frontend` directory or populate it with files for your project.
