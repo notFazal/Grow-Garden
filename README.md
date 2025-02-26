@@ -1,5 +1,9 @@
 # Full Stack Group Project Template
-Add a brief overview of your Project here.
+This repository is a template for your Full Stack Group Project. It includes a basic project structure, along with Markdown examples for weekly meeting notes and the project README.  
+
+Use this repository to store your code and collaborate throughout all FGP stages, starting from FGP3.  
+
+**Note:** This layout is an example. The official requirements for your project README will be provided later in the course.  
 
 ## About<!-- Required -->
 <!-- 
@@ -39,7 +43,7 @@ Add a brief overview of your Project here.
 
 
 <dev align="center">
-<table align="center">
+    <table align="center">
         <tr>
             <td><a href="#about">About</a></td>        
             <td><a href="#how-to-use-this-project">Getting started</td>
@@ -54,7 +58,7 @@ Add a brief overview of your Project here.
             <td><a href="#contact">Contact</a></td>
             <td><a href="#license">License</a></td>
         </tr>
-</table>
+    </table>
 </dev>
 
 
@@ -69,6 +73,8 @@ Add a brief overview of your Project here.
 * Under production or will be updated.
 -->
 
+
+<!-- - Use this html element to create a back to top button. -->
 <p align="right"><a href="#how-to-use-this-project">back to top ⬆️</a></p>
 
 

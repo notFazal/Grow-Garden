@@ -1,15 +1,17 @@
-## Sample Weekly Meeting Notes :
+# Sample Weekly Meeting Notes:
+Please note that this is the required layout for the weekly notes.
 
+## Overview:
+**When**:  
+**Duration**:  
+**Where**:  
 
-## Weekly Review Meeting :
-When: 
-Length of Meeting:
-Where: 
-Missing ( why ) : N/A
-Late ( why ) : N/A
+## Attendance
+**Late**: Name (why)  
+**Missing**: N/A
 
-## Recent Progress :
+## Recent Progress:
 
-## Meeting Notes : 
+## Meeting Notes: 
  
-## Current Action Items ( Work In Progress ) :
+## Action Items (Work In Progress):
