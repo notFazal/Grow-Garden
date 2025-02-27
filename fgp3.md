@@ -19,3 +19,7 @@ Backend Developer - Fernando
 Disagreement - flip a coin
 Team Members not Pulling Their Weight - All memebers wili go to the TA to
 resolve the conflict.
+# Helmer's Brainstorming
+Track 1 - An app that shows types of birds in a location and an app that shows landmarks
+Track 2 - An app that tracks events at UIC by time and an app that finds empty rooms to study
+Track 3 - An app that tracks Music venues by genre and an app that tracks Art museum tours by date 
