@@ -10,3 +10,12 @@ FGP6 - April 8th at 6 pm
 - Mrdeath02 (Fazal), fernando7ct (Fernando), jgr9432 (Helmer)
 - 24/7 (whenever your not busy)
 - 24 hours
+
+# Roles
+Project Lead - Fazal
+Frontend Developer - Helmer Gomez
+Backend Developer - Fernando
+
+Disagreement - flip a coin
+Team Members not Pulling Their Weight - All memebers wili go to the TA to
+resolve the conflict.
