@@ -20,13 +20,25 @@ Disagreement - flip a coin
 Team Members not Pulling Their Weight - All memebers wili go to the TA to
 resolve the conflict.
 
+# Project Brainstorming
 # Fernando's Brainstorming
 Track 1:
-Book Reading tracker. 
-Touch grass (in order to access a social media app take a picture of you touching grass)
+Book Reading tracker.  FA:Yes
+Touch grass (in order to access a social media app take a picture of you touching grass) FA:No
 Track 2:
-Study group (app that lets you create study groups for each class and meet up). 
-Friends finder app depending on interests
+Study group (app that lets you create study groups for each class and meet up). FA:Yes
+Friends finder app depending on interests FA:Yes
 Track 3:
-Art Connections (app that people can upload their art to and write about it, others can view and respond). 
-History (app that contains history on different religions)
+Art Connections (app that people can upload their art to and write about it, others can view and respond). FA:No
+History (app that contains history on different religions) FA:No
+
+# Fazal's Brainstorming
+Track 1:
+Nature Timer Lock (Spend time outside using gps to unlock phone)
+Focus Garden (Garden game that grows plant when not on phone); 
+Track 2: 
+Rec center Crowd meter (Tracks crowd at gym)
+Campus Rewards (App that gives rewards on campus for less screen time)
+Track 3:
+Duolingo app for endangered languages
+AI Subtitle for in real time
