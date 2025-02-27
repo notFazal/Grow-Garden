@@ -36,11 +36,11 @@ History (app that contains history on different religions) FA:No HG:No
 
 # Fazal's Brainstorming
 Track 1:
-Nature Timer Lock (Spend time outside using gps to unlock phone): HG Yes
-Focus Garden (Garden game that grows plant when not on phone); HG:Yes
+Nature Timer Lock (Spend time outside using gps to unlock phone): HG Yes FE: No
+Focus Garden (Garden game that grows plant when not on phone); HG:YesFE: Yes
 Track 2: 
-Rec center Crowd meter (Tracks crowd at gym) HG: Yes
-Campus Rewards (App that gives rewards on campus for less screen time) HG: Yes
+Rec center Crowd meter (Tracks crowd at gym) HG: Yes FE: Yes
+Campus Rewards (App that gives rewards on campus for less screen time) FE: No HG: Yes
 Track 3:
 Duolingo app for endangered languages HG:No
 AI Subtitle for in real time HG:Yes
