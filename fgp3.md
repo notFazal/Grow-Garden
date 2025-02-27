@@ -1,0 +1,6 @@
+# Logistics
+We are all available to meet Monday, Tuesday, Wednesday from 6:00 to 8:00 pm.
+Our weekly meeting will be on Tuesdays from 6:00 to 7:00 pm.
+Timeline: 
+FGP4 - March 4th at 6 pm
+FGP6 - April 8th at 6 pm
