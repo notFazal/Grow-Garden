@@ -21,6 +21,12 @@ Team Members not Pulling Their Weight - All memebers wili go to the TA to
 resolve the conflict.
 
 # Fernando's Brainstorming
-Track 1 - Book Reading tracker. Touch grass (in order to access a social media app take a picture of you touching grass)
-Track 2 - Study group (app that lets you create study groups for each class and meet up). Friends finder app depending on interests
-Track 3 - Art Connections (app that people can upload their art to and write about it, others can view and respond). History (app that contains history on different religions)
+Track 1:
+Book Reading tracker. 
+Touch grass (in order to access a social media app take a picture of you touching grass)
+Track 2:
+Study group (app that lets you create study groups for each class and meet up). 
+Friends finder app depending on interests
+Track 3:
+Art Connections (app that people can upload their art to and write about it, others can view and respond). 
+History (app that contains history on different religions)
