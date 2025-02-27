@@ -19,7 +19,38 @@ Backend Developer - Fernando
 Disagreement - flip a coin
 Team Members not Pulling Their Weight - All memebers wili go to the TA to
 resolve the conflict.
+
+# Project Brainstorming
+# Fernando's Brainstorming
+Track 1:
+Book Reading tracker.  FA:Yes HG: Yes
+Touch grass (in order to access a social media app take a picture of you touching grass) FA:No
+Track 2:
+Study group (app that lets you create study groups for each class and meet
+up). FA:Yes HG: Yes
+Friends finder app depending on interests FA:Yes HG: Yes
+Track 3:
+Art Connections (app that people can upload their art to and write about
+it, others can view and respond). FA:No HG: NO
+History (app that contains history on different religions) FA:No HG:No
+
+# Fazal's Brainstorming
+Track 1:
+Nature Timer Lock (Spend time outside using gps to unlock phone): HG Yes
+Focus Garden (Garden game that grows plant when not on phone); HG:Yes
+Track 2: 
+Rec center Crowd meter (Tracks crowd at gym) HG: Yes
+Campus Rewards (App that gives rewards on campus for less screen time) HG: Yes
+Track 3:
+Duolingo app for endangered languages HG:No
+AI Subtitle for in real time HG:Yes
 # Helmer's Brainstorming
-Track 1 - An app that shows types of birds in a location and an app that shows landmarks
-Track 2 - An app that tracks events at UIC by time and an app that finds empty rooms to study
-Track 3 - An app that tracks Music venues by genre and an app that tracks Art museum tours by date 
+Track 1: 
+An app that shows types of birds in a location
+an app that shows landmarks
+Track 2:
+An app that tracks events at UIC by time:
+an app that finds empty rooms to study
+Track 3:
+An app that tracks Music venues by genre
+an app that tracks Art museum tours by date 
