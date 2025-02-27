@@ -46,11 +46,11 @@ Duolingo app for endangered languages HG:No
 AI Subtitle for in real time HG:Yes
 # Helmer's Brainstorming
 Track 1: 
-An app that shows types of birds in a location
-an app that shows landmarks
+An app that shows types of birds in a location FE: yes
+an app that shows landmarks FE: No
 Track 2:
-An app that tracks events at UIC by time:
-an app that finds empty rooms to study
+An app that tracks events at UIC by time FE: No
+an app that finds empty rooms to study FE: Yes
 Track 3:
-An app that tracks Music venues by genre
-an app that tracks Art museum tours by date 
+An app that tracks Music venues by genre FE: Yes
+an app that tracks Art museum tours by date  FE: No
