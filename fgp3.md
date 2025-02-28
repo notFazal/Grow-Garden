@@ -44,14 +44,24 @@ Campus Rewards (App that gives rewards on campus for less screen time) FE: No HG
 Track 3:
 Duolingo app for endangered languages HG:No
 AI Subtitle for in real time HG:Yes
-
 # Helmer's Brainstorming
 Track 1: 
-An app that shows types of birds in a location FA: No FE: yes
-an app that shows landmarks FA: Yes FE: No
+An app that shows types of birds in a location FE: yes
+an app that shows landmarks FE: No
 Track 2:
-An app that tracks events at UIC by time FA: Yes FE: No
-an app that finds empty rooms to study Fa:Yes FE: Yes 
+An app that tracks events at UIC by time FE: No
+an app that finds empty rooms to study FE: Yes
 Track 3:
-An app that tracks Music venues by genre FA: No FE: Yes
-an app that tracks Art museum tours by date FA: No FE: No
+An app that tracks Music venues by genre FE: Yes
+an app that tracks Art museum tours by date  FE: No
+
+# Final Track Ideas
+Track 1:
+Book Reading Tracker
+Focus Garden (Garden game that grows plant when not on phone) # Finalist
+Track 2:
+Rec Center Crowd Meter  # Finalist
+Friends finder app depending on interests
+Track 3:
+AI Subtitle for in real time
+An app that tracks Music venues by genre 
