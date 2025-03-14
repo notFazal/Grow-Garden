@@ -8,8 +8,8 @@
 **Missing**: N/A
 
 ## Recent Progress:
-- Chose our project idea which is Focus Garden
-- Brainstormed implementation methods for the Focus Garden features.
+- Helmer added template of frontend and we tested on our ends which works as intended.
+- Using Google cloud API to keep track of user data. 
 
 ## Meeting Notes: 
 GitHub Revisions and Contributions
