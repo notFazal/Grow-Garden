@@ -40,3 +40,4 @@ considered list with sorting method but priority q handles it efficiently
 ## Action Items (Work In Progress):
 - Helmer is working on front-end of user login
 - Fernando is getting google cloud api setup, getting key etc
+- Fazal is flex
