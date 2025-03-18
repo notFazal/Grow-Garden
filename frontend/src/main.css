@@ -1,0 +1,15 @@
+.header {
+	padding: 0px;
+	text-align: center;
+	color: white;
+	font-family: serif;
+	font-size: 40px;
+  }
+body {
+	background-color:#000000;
+	height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+	transform: scale(0.8,0.8);
+}
