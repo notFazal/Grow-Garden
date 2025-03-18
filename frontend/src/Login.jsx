@@ -1,11 +1,16 @@
 import React from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "./firebase";
 import "./Login.css";
 
 function Login() {
   const { register, handleSubmit, formState: { errors } } = useForm();
+  const navigate = useNavigate();
+  const FocusGardenPath = () => {
+	navigate('/FocusGarden'); 
+	};
 
   const onSubmit = async (data) => {
     try {
@@ -15,7 +20,7 @@ function Login() {
       
       console.log(user.displayName + " you are successfully logged in");
       // After login, redirect the user or load their garden data
-
+	  FocusGardenPath();
     } catch (error) {
       console.error("Login failed:", error.message);
     }
