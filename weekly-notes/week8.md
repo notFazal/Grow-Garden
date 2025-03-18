@@ -9,7 +9,7 @@
 
 ## Recent Progress:
 - Helmer added template of frontend and we tested on our ends which works as intended.
-- Using Google cloud API to keep track of user data. 
+- Connect Firebase to keep track of user data. 
 
 ## Meeting Notes: 
 GitHub Revisions and Contributions
