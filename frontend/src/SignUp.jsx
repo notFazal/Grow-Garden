@@ -24,8 +24,8 @@ function SignUp() {
 
   return (
     <>
-      <p className="title">Create Garden</p>
       <form className="SignUp" onSubmit={handleSubmit(onSubmit)}>
+	  <p>Create Garden</p>
         <h3>Garden Name</h3>
         <input type="text" {...register("name")} />
         <h3>Email</h3>

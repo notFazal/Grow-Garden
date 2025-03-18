@@ -8,6 +8,15 @@
     font-size: 2rem;
     font-family: serif;
 }
+p {
+	text-align: center;
+	/* // removed added border but could be placed back
+	background-color: #CDE5D9;
+	*/
+    font-size: 3rem;
+    font-family: serif;
+	border-radius: 10px 10px 10px 10px;
+}
 .Login {
     text-align: center;
     display: flex;
@@ -15,11 +24,8 @@
     margin: auto;
     width: 30vw;
     padding: 1vw 1vw;
-    background-color: #EBc3C1;
-    border-radius: 0 0 10px 10px;
-}
-p {
-	font-family: serif;
+    background-color: #e3bac7;
+    border-radius: 10px 10px 10px 10px;
 }
 input {
     border: 1px solid rgb(172, 171, 171);

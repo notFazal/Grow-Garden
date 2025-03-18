@@ -23,8 +23,8 @@ function Login() {
 
   return (
     <>
-      <p className="title">Login</p>
       <form className="Login" onSubmit={handleSubmit(onSubmit)}>
+	  <p>Login</p>
         <h3>Email</h3>
         <input type="email" {...register("email", { required: true })} />
         {errors.email && <span style={{ color: "red" }}>*Email* is mandatory</span>}

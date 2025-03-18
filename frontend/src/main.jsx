@@ -9,8 +9,8 @@ createRoot(document.getElementById('root')).render(
 	<div className="header">
 		<h1>Focus Garden
 		</h1>
-		<p>Sign in or Create 
-		</p>
+		<h3>Sign in or Create 
+		</h3>
 	</div>
 	<div style={{ display: 'flex', flexDirection: 'row', gap: '30px' }}>
         <div><Login/></div>

@@ -5,11 +5,8 @@
     margin: auto;
     width: 30vw;
     padding: 1vw 1vw;
-    background-color: #EBc3C1;
-    border-radius: 0 0 10px 10px;
-}
-p {
-	font-family: serif;
+    background-color: #BEE3BA;
+    border-radius: 10px 10px 10px 10px;
 }
 input {
     border: 1px solid rgb(172, 171, 171);
