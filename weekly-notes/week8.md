@@ -9,7 +9,7 @@
 
 ## Recent Progress:
 - Helmer added template of frontend and we tested on our ends which works as intended.
-- Using Google cloud API to keep track of user data. 
+- Connect Firebase to keep track of user data. 
 
 ## Meeting Notes: 
 GitHub Revisions and Contributions
@@ -27,8 +27,8 @@ Full Stack Application
 4. Connect front-end to back end by week9.  Implement plant growth logic/parsing screen data. week 10. add leaderboards, reward system, and basic user testing by week 11.
 
 Data Source & Backend Integration
-1. google cloud api
-2. Our backend will integrate with the Google Cloud API to pull in user data at login. When a user logs in, the backend will query the API for their screen time data. If a record for that user already exists in our database, the data will be updated; if not, a new record will be created. 
+1. Firebase 
+2. Our backend will integrate with the Firease API to pull in user data at login. When a user logs in, the backend will query the API for their screen time data. If a record for that user already exists in our database, the data will be updated; if not, a new record will be created. 
 3.raw screen time data is parsed and convert mins to hours etc. 
 
 Choice & Data Structures(rough draft 99% sure)
