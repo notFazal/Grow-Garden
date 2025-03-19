@@ -1,15 +1,25 @@
 .header {
-	padding: 0px;
 	text-align: center;
 	color: white;
 	font-family: serif;
 	font-size: 40px;
   }
-body {
-	background-color:#000000;
-	height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  .scaling {
 	transform: scale(0.8,0.8);
+	height: 5vh;
+	
+  }
+.loginSignUp { 
+	height: 5vh;
+	justify-content: center; 
+	display: flex;
+	flex-direction: row;
+	gap: 30px;
+}
+.main {
+	width: 100%;
+	height: 100vh;   
+	box-sizing: border-box;
+	background-color: #000000;
+	position: absolute;
 }
