@@ -1,0 +1,40 @@
+
+.grid-container {
+	display: grid;
+	grid-template-columns: repeat(5, 1fr);
+	grid-template-rows: repeat(5, 1fr);
+	gap: 8px;
+	padding: 10px;
+	max-width: 600px; 
+	margin: 0 auto;
+	background-color: transparent; 
+  }
+  
+  .grid-item {
+	background-color: transparent; 
+	border-radius: 8px; 
+	overflow: hidden;
+	box-shadow: 0 2px 4px rgba(13, 0, 255, 0.056); 
+	position: relative; 
+	background-size: cover;
+
+  }
+  
+  .grid-item img {
+	width: 100%; 
+	height: auto; 
+	object-fit: cover; 
+  }
+  
+  
+  .grid-item input {
+	position: absolute;
+	top: 50%; 
+	left: 50%; 
+	transform: translate(-50%, -50%);
+	opacity: 0; 
+	width: 100%; 
+	height: 100%;
+	cursor: pointer; 
+  }
+  

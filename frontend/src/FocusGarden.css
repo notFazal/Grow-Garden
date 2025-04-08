@@ -6,13 +6,23 @@ html, body {
 	width: 100%;    
 	height: 100vh;  
 	box-sizing: border-box;
-	background-color: #000000;
-	text-align: center;
-
+	text-align: center;	
+	justify-content: center; 
+	display: flex;
+	flex-direction: row;
+	background-color: black;
+}
+.GridLocation {
+	background-image: url('/Farmland.png') ;
+	background-size: cover;
+	background-position: center;
+	position: relative;
+	top: 30px;
 	
+
 }
 .gardenTitle {
-	color: #CDE5D9; 
+	color: #ffffff; 
 	font-size: 6rem; 
 	margin: 0;
   	padding: 0;
