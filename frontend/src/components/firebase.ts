@@ -1,8 +1,16 @@
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import { getAuth } from "firebase/auth";
+import { getAnalytics, Analytics } from "firebase/analytics";
+import { getAuth, Auth } from "firebase/auth";
 
-const firebaseConfig = {
+const firebaseConfig: {
+  apiKey: string;
+  authDomain: string;
+  projectId: string;
+  storageBucket: string;
+  messagingSenderId: string;
+  appId: string;
+  measurementId: string;
+} = {
   apiKey: "AIzaSyCam33TQJJjNDUl-pgxxn62brMwIC7BsG0",
   authDomain: "focus-garden.firebaseapp.com",
   projectId: "focus-garden",
@@ -13,5 +21,5 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-export const auth = getAuth(app);
+const analytics: Analytics = getAnalytics(app);
+export const auth: Auth = getAuth(app);

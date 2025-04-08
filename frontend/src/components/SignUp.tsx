@@ -1,13 +1,19 @@
 import React from "react";
-import { useForm } from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { auth } from "./firebase";
+import { auth } from "./firebase.ts";
 import "./SignUp.css";
 
-function SignUp() {
-  const { register, handleSubmit, formState: { errors } } = useForm();
+interface FormData {
+  name: string;
+  email: string;
+  password: string;
+}
 
-  const onSubmit = async (data) => {
+function SignUp() {
+  const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
+
+  const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
       // Create a new user with email and password
       const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password);
@@ -17,7 +23,7 @@ function SignUp() {
       
       console.log("User created successfully:", user);
 
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error signing up:", error.message);
     }
   };
@@ -25,7 +31,7 @@ function SignUp() {
   return (
     <>
       <form className="SignUp" onSubmit={handleSubmit(onSubmit)}>
-	  <p>Create Garden</p>
+        <p>Create Garden</p>
         <h3>Garden Name</h3>
         <input type="text" {...register("name")} />
         <h3>Email</h3>
