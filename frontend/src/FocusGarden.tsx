@@ -1,50 +1,114 @@
-import React, { useState, useEffect } from 'react';
+// FocusGarden.tsx
+import React, { useState, useEffect, useRef } from 'react';
 import { Flower2, Trophy, Clock, Calendar } from 'lucide-react';
-import { PlantGrid } from './components/PlantGrid.tsx';
-import { Leaderboard } from './components/Leaderboard.tsx';
+import { PlantGrid } from './components/PlantGrid';
+import { Leaderboard } from './components/Leaderboard';
+import { getFirestore, doc, getDoc, updateDoc } from "firebase/firestore";
+import { auth } from "./components/firebase";
+
+const db = getFirestore();
 
 function FocusGarden() {
   const [lifetimeSeconds, setLifetimeSeconds] = useState(0);
   const [dailySeconds, setDailySeconds] = useState(0);
+  const [weeklyTimes, setWeeklyTimes] = useState<number[]>([0, 0, 0, 0, 0, 0, 0]);
   const [isVisible, setIsVisible] = useState(!document.hidden);
+  const [initialized, setInitialized] = useState(false);
 
+  // Create refs to store the latest timer values for Firebase updates.
+  const dailyRef = useRef(dailySeconds);
+  const lifetimeRef = useRef(lifetimeSeconds);
+  const weeklyRef = useRef(weeklyTimes);
+
+  // Update refs when state changes.
+  useEffect(() => {
+    dailyRef.current = dailySeconds;
+    lifetimeRef.current = lifetimeSeconds;
+    weeklyRef.current = weeklyTimes;
+  }, [dailySeconds, lifetimeSeconds, weeklyTimes]);
+
+  // Get current day index (0 = Sunday, 6 = Saturday)
+  const currentDayIndex = new Date().getDay();
+
+  // Fetch user data when component mounts (if signed in)
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const user = auth.currentUser;
+      if (user) {
+        const userRef = doc(db, "users", user.uid);
+        const snapshot = await getDoc(userRef);
+        if (snapshot.exists()) {
+          const data = snapshot.data();
+          setDailySeconds(data.dailyTime || 0);
+          setLifetimeSeconds(data.lifetimeTime || 0);
+          setWeeklyTimes(data.weeklyTimes || [0, 0, 0, 0, 0, 0, 0]);
+        }
+      }
+      setInitialized(true);
+    };
+    fetchUserData();
+  }, []);
+
+  // Track page visibility changes.
   useEffect(() => {
     const handleVisibilityChange = () => {
       setIsVisible(!document.hidden);
     };
 
     document.addEventListener('visibilitychange', handleVisibilityChange);
-
-    return () => {
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
-    };
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
   }, []);
 
+  // Update timers in the UI every second when visible.
   useEffect(() => {
-    // let interval: number | undefined;
-	let interval: NodeJS.Timeout | undefined;
-
-    if (isVisible) {
-		interval = setInterval(() => {
-        setLifetimeSeconds(prev => prev + 1);
+    let timer: NodeJS.Timeout;
+    if (isVisible && initialized) {
+      timer = setInterval(() => {
         setDailySeconds(prev => prev + 1);
+        setLifetimeSeconds(prev => prev + 1);
+        // Update the weeklyTimes array for the current day.
+        setWeeklyTimes(prev => {
+          const newWeekly = [...prev];
+          newWeekly[currentDayIndex] = newWeekly[currentDayIndex] + 1;
+          return newWeekly;
+        });
       }, 1000);
     }
+    return () => timer && clearInterval(timer);
+  }, [isVisible, initialized, currentDayIndex]);
 
-    // Reset daily timer at midnight
+  // Reset daily timer at midnight.
+  useEffect(() => {
     const now = new Date();
     const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
     const timeUntilMidnight = tomorrow.getTime() - now.getTime();
 
-    const midnightReset = setTimeout(() => {
+    const resetTimeout = setTimeout(() => {
       setDailySeconds(0);
     }, timeUntilMidnight);
 
-    return () => {
-      if (interval) clearInterval(interval);
-      clearTimeout(midnightReset);
-    };
-  }, [isVisible]);
+    return () => clearTimeout(resetTimeout);
+  }, [dailySeconds]);
+
+  // Update Firebase every 1 minute using the latest state from refs.
+  useEffect(() => {
+    const oneMinInterval = setInterval(async () => {
+      const user = auth.currentUser;
+      if (user) {
+        const userRef = doc(db, "users", user.uid);
+        const currentWeek = getWeekNumber(new Date());
+        await updateDoc(userRef, {
+          dailyTime: dailyRef.current,
+          lifetimeTime: lifetimeRef.current,
+          weeklyTimes: weeklyRef.current,
+          lastUpdated: new Date().toISOString(),
+          lastWeek: currentWeek
+        });
+      }
+    }, 30 * 1000);
+
+    return () => clearInterval(oneMinInterval);
+  }, []);
 
   const formatTime = (seconds: number) => {
     const hours = Math.floor(seconds / 3600);
@@ -63,7 +127,9 @@ function FocusGarden() {
           </div>
           <p className="text-emerald-600">Grow your garden while staying focused</p>
           {!isVisible && (
-            <p className="mt-2 text-red-500">Timer paused - Return to this tab to continue growing your garden!</p>
+            <p className="mt-2 text-red-500">
+              Timer paused - Return to this tab to continue growing your garden!
+            </p>
           )}
         </header>
 
@@ -93,6 +159,13 @@ function FocusGarden() {
       </div>
     </div>
   );
+}
+
+// Helper: get week number (used for weekly reset)
+function getWeekNumber(date: Date) {
+  const firstDayOfYear = new Date(date.getFullYear(), 0, 1);
+  const pastDaysOfYear = (date.getTime() - firstDayOfYear.getTime()) / 86400000;
+  return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
 }
 
 export default FocusGarden;

@@ -1,7 +1,10 @@
+// SignUp.tsx
 import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "./firebase.ts";
+import { getFirestore, doc, setDoc } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
 import "./SignUp.css";
 
 interface FormData {
@@ -12,6 +15,8 @@ interface FormData {
 
 function SignUp() {
   const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
+ const navigate = useNavigate();
+ const db = getFirestore();
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
@@ -22,11 +27,32 @@ function SignUp() {
       await updateProfile(user, { displayName: data.name });
       
       console.log("User created successfully:", user);
+      
+      // Create a Firestore document with the user’s UID as the id.
+      await setDoc(doc(db, "users", user.uid), {
+        gardenName: data.name,
+        dailyTime: 0,
+        lifetimeTime: 0,
+        weeklyTimes: [0, 0, 0, 0, 0, 0, 0],
+        lastUpdated: new Date().toISOString(),
+        // You can store the current week number if needed for resets:
+        lastWeek: getWeekNumber(new Date())
+      });
+      
+      // Navigate directly to the FocusGarden view.
+      navigate("/FocusGarden");
 
     } catch (error: any) {
       console.error("Error signing up:", error.message);
     }
   };
+
+// Helper function to get current week number (optional)
+function getWeekNumber(date: Date) {
+  const firstDayOfYear = new Date(date.getFullYear(), 0, 1);
+  const pastDaysOfYear = (date.getTime() - firstDayOfYear.getTime()) / 86400000;
+  return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
+}
 
   return (
     <>

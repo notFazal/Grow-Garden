@@ -1,3 +1,4 @@
+/* Login.css */
 .title {
 	text-align: center;
     width: 30vw;
@@ -9,9 +10,6 @@
 }
 p {
 	text-align: center;
-	/* // removed added border but could be placed back
-	background-color: #CDE5D9;
-	*/
     font-size: 3rem;
     font-family: serif;
 	border-radius: 10px 10px 10px 10px;

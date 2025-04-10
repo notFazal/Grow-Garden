@@ -1,3 +1,4 @@
+// Plant.tsx
 import React from 'react';
 import { Sprout, Flower, TreePine, Lock } from 'lucide-react';
 
@@ -10,6 +11,17 @@ interface PlantProps {
 
 export const Plant: React.FC<PlantProps> = ({ growth, isWeekly, isLocked, dayLabel }) => {
   const getPlantStage = () => {
+    if (isWeekly) {
+      // For weekly plants, if not fully unlocked, always show sprout.
+      // Once fully unlocked (growth === 100), show the flower.
+      if (growth < 100) {
+        return { icon: Sprout, color: 'text-emerald-400' };
+      } else {
+        return { icon: Flower, color: 'text-emerald-600' };
+      }
+    }
+    
+    // For lifetime plants use your original progression logic.
     if (isLocked) {
       return { icon: Lock, color: 'text-gray-400' };
     } else if (growth < 33) {
@@ -45,4 +57,4 @@ export const Plant: React.FC<PlantProps> = ({ growth, isWeekly, isLocked, dayLab
       )}
     </div>
   );
-}
+};

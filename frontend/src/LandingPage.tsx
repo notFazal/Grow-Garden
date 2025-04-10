@@ -1,3 +1,4 @@
+// LandingPage.tsx
 import './LandingPage.css';
 import SignUp from './components/SignUp.tsx';
 import Login from './components/Login.tsx';

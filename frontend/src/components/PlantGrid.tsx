@@ -1,6 +1,7 @@
+// PlantGrid.tsx
 import React from 'react';
 import { Plant } from './Plant';
-import { Calendar, Clock } from 'lucide-react';
+import { Calendar } from 'lucide-react';
 
 interface PlantGridProps {
   lifetimeSeconds: number;
@@ -10,8 +11,56 @@ interface PlantGridProps {
 export const PlantGrid: React.FC<PlantGridProps> = ({ lifetimeSeconds, dailySeconds }) => {
   const rows = 3;
   const cols = 7;
+  const totalCells = cols * rows;
   const weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   const currentDay = new Date().getDay();
+
+  // Lifetime thresholds for the first 6 cells:
+  // Plant 1 unlocks after 3 mins (180 sec)
+  // Plant 2 unlocks after 5 mins total (480 sec)
+  // Plant 3 unlocks after 10 mins (1080 sec)
+  // Plant 4 unlocks after 30 mins (2880 sec)
+  // Plant 5 unlocks after 1 hr (6480 sec)
+  // Plant 6 unlocks after 4 hrs (20880 sec)
+  const baseThresholds = [180, 480, 1080, 2880, 6480, 20880];
+  const getThresholdForIndex = (index: number): number => {
+    if (index < baseThresholds.length) {
+      return baseThresholds[index];
+    } else {
+      const extraIndex = index - baseThresholds.length + 1;
+      return baseThresholds[baseThresholds.length - 1] + extraIndex * 14400;
+    }
+  };
+
+  // Determine the first lifetime cell not fully unlocked.
+  let currentUnlockIndex = totalCells;
+  for (let i = 0; i < totalCells; i++) {
+    const threshold = getThresholdForIndex(i);
+    if (lifetimeSeconds < threshold) {
+      currentUnlockIndex = i;
+      break;
+    }
+  }
+
+  // Compute progress for a lifetime cell.
+  const getLifetimeProgress = (index: number): number => {
+    if (index < currentUnlockIndex) return 100;
+    if (index > currentUnlockIndex) return 0;
+    // For the cell in progress:
+    const prevThreshold = index === 0 ? 0 : getThresholdForIndex(index - 1);
+    const currentThreshold = getThresholdForIndex(index);
+    const progress = ((lifetimeSeconds - prevThreshold) / (currentThreshold - prevThreshold)) * 100;
+    return Math.min(100, Math.max(0, progress));
+  };
+
+  // Weekly progress uses a 300-second threshold.
+  const weeklyThreshold = 300;
+  const getWeeklyProgress = (index: number): number => {
+    if (index === currentDay) {
+      return Math.min(100, (dailySeconds / weeklyThreshold) * 100);
+    }
+    return 0;
+  };
 
   const formatTime = (seconds: number) => {
     const hours = Math.floor(seconds / 3600);
@@ -20,32 +69,20 @@ export const PlantGrid: React.FC<PlantGridProps> = ({ lifetimeSeconds, dailySeco
     return `${hours > 0 ? `${hours}h ` : ''}${minutes}m ${secs}s`;
   };
 
-  // Calculate which lifetime plants are unlocked based on previous plant completion
-  const getUnlockStatus = (index: number) => {
-    if (index === 0) return true;
-    const previousPlantGrowth = Math.min(100, (lifetimeSeconds / 180) * (index === 1 ? 1 : 0.5));
-    return previousPlantGrowth >= 100;
-  };
-
-  const calculateGrowth = (index: number, isUnlocked: boolean) => {
-    if (!isUnlocked) return 0;
-    return Math.min(100, (lifetimeSeconds / 180) * (index === 0 ? 1 : 0.5));
-  };
-
   return (
     <div className="grid gap-8">
-      {/* Lifetime grid */}
+      {/* Lifetime Grid */}
       <div className="grid grid-cols-7 gap-4">
-        {Array.from({ length: cols * rows }).map((_, index) => {
-          const isUnlocked = getUnlockStatus(index);
-          const growth = calculateGrowth(index, isUnlocked);
+        {Array.from({ length: totalCells }).map((_, index) => {
+          const progress = getLifetimeProgress(index);
+          const isUnlocked = progress === 100;
           return (
             <Plant 
               key={`lifetime-${index}`}
-              growth={growth}
+              growth={progress}
               isWeekly={false}
-              isLocked={!isUnlocked}
-              dayLabel=""
+              isLocked={!(index === currentUnlockIndex) && !isUnlocked}
+              dayLabel={`Plant ${index + 1}`}
             />
           );
         })}
@@ -57,12 +94,12 @@ export const PlantGrid: React.FC<PlantGridProps> = ({ lifetimeSeconds, dailySeco
         <span>Daily Progress: {formatTime(dailySeconds)}</span>
       </div>
 
-      {/* Weekly row */}
+      {/* Weekly Row */}
       <div className="grid grid-cols-7 gap-4">
         {weekDays.map((day, index) => (
           <Plant 
             key={`weekly-${index}`}
-            growth={index === currentDay ? Math.min(100, dailySeconds / 180) : 0}
+            growth={index === currentDay ? getWeeklyProgress(index) : 0}
             isWeekly={true}
             isLocked={false}
             dayLabel={day}
@@ -71,4 +108,4 @@ export const PlantGrid: React.FC<PlantGridProps> = ({ lifetimeSeconds, dailySeco
       </div>
     </div>
   );
-}
+};

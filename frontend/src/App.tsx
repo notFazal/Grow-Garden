@@ -1,9 +1,7 @@
+// App.tsx
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LandingPage from './LandingPage.tsx';
 import FocusGarden from "./FocusGarden.tsx";
-
-// Routes to navigate between pages - App holds all my routes and / is the default path
-// So when I go to localhost:/ landing page is the first component that comes up 
 
 const App: React.FC = () => {
   return (
