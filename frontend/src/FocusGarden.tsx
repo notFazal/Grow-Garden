@@ -5,22 +5,27 @@ import { PlantGrid } from './components/PlantGrid';
 import { Leaderboard } from './components/Leaderboard';
 import { getFirestore, doc, getDoc, updateDoc } from "firebase/firestore";
 import { auth } from "./components/firebase";
+import { onAuthStateChanged } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 
 const db = getFirestore();
 
 function FocusGarden() {
+  const navigate = useNavigate();
+
+  // Timer state variables
   const [lifetimeSeconds, setLifetimeSeconds] = useState(0);
   const [dailySeconds, setDailySeconds] = useState(0);
+  // Weekly times: one value per weekday (Sunday: index 0 ... Saturday: index 6)
   const [weeklyTimes, setWeeklyTimes] = useState<number[]>([0, 0, 0, 0, 0, 0, 0]);
+  // Instead of storing currentDate locally, we now rely on the stored lastUpdated.
   const [isVisible, setIsVisible] = useState(!document.hidden);
   const [initialized, setInitialized] = useState(false);
 
-  // Create refs to store the latest timer values for Firebase updates.
+  // Refs for the current timer values (for Firebase sync)
   const dailyRef = useRef(dailySeconds);
   const lifetimeRef = useRef(lifetimeSeconds);
   const weeklyRef = useRef(weeklyTimes);
-
-  // Update refs when state changes.
   useEffect(() => {
     dailyRef.current = dailySeconds;
     lifetimeRef.current = lifetimeSeconds;
@@ -30,7 +35,17 @@ function FocusGarden() {
   // Get current day index (0 = Sunday, 6 = Saturday)
   const currentDayIndex = new Date().getDay();
 
-  // Fetch user data when component mounts (if signed in)
+  // Listen for auth state changes; if not signed in, redirect.
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        navigate("/");
+      }
+    });
+    return () => unsubscribe();
+  }, [navigate]);
+
+  // On mount, fetch user data from Firestore.
   useEffect(() => {
     const fetchUserData = async () => {
       const user = auth.currentUser;
@@ -39,7 +54,19 @@ function FocusGarden() {
         const snapshot = await getDoc(userRef);
         if (snapshot.exists()) {
           const data = snapshot.data();
-          setDailySeconds(data.dailyTime || 0);
+          // Compare lastUpdated (if exists) with today's date.
+          // If the stored date is different from today's date, reset dailySeconds.
+          if (data.lastUpdated) {
+            const lastUpdatedDate = new Date(data.lastUpdated).toDateString();
+            const today = new Date().toDateString();
+            if (lastUpdatedDate !== today) {
+              setDailySeconds(0);
+            } else {
+              setDailySeconds(data.dailyTime || 0);
+            }
+          } else {
+            setDailySeconds(data.dailyTime || 0);
+          }
           setLifetimeSeconds(data.lifetimeTime || 0);
           setWeeklyTimes(data.weeklyTimes || [0, 0, 0, 0, 0, 0, 0]);
         }
@@ -49,24 +76,23 @@ function FocusGarden() {
     fetchUserData();
   }, []);
 
-  // Track page visibility changes.
+  // Listen for page visibility changes.
   useEffect(() => {
     const handleVisibilityChange = () => {
       setIsVisible(!document.hidden);
     };
-
     document.addEventListener('visibilitychange', handleVisibilityChange);
-    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+    return () =>
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
   }, []);
 
-  // Update timers in the UI every second when visible.
+  // Update timers every second when page is visible.
   useEffect(() => {
     let timer: NodeJS.Timeout;
     if (isVisible && initialized) {
       timer = setInterval(() => {
         setDailySeconds(prev => prev + 1);
         setLifetimeSeconds(prev => prev + 1);
-        // Update the weeklyTimes array for the current day.
         setWeeklyTimes(prev => {
           const newWeekly = [...prev];
           newWeekly[currentDayIndex] = newWeekly[currentDayIndex] + 1;
@@ -77,22 +103,9 @@ function FocusGarden() {
     return () => timer && clearInterval(timer);
   }, [isVisible, initialized, currentDayIndex]);
 
-  // Reset daily timer at midnight.
+  // Update Firebase every 30 seconds, including the lastUpdated timestamp.
   useEffect(() => {
-    const now = new Date();
-    const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
-    const timeUntilMidnight = tomorrow.getTime() - now.getTime();
-
-    const resetTimeout = setTimeout(() => {
-      setDailySeconds(0);
-    }, timeUntilMidnight);
-
-    return () => clearTimeout(resetTimeout);
-  }, [dailySeconds]);
-
-  // Update Firebase every 1 minute using the latest state from refs.
-  useEffect(() => {
-    const oneMinInterval = setInterval(async () => {
+    const halfMinInterval = setInterval(async () => {
       const user = auth.currentUser;
       if (user) {
         const userRef = doc(db, "users", user.uid);
@@ -106,10 +119,10 @@ function FocusGarden() {
         });
       }
     }, 30 * 1000);
-
-    return () => clearInterval(oneMinInterval);
+    return () => clearInterval(halfMinInterval);
   }, []);
 
+  // Helper: format seconds as "xh ym zs"
   const formatTime = (seconds: number) => {
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
@@ -132,7 +145,6 @@ function FocusGarden() {
             </p>
           )}
         </header>
-
         <div className="flex gap-8">
           <div className="flex-1">
             <div className="bg-white rounded-2xl shadow-xl p-6">
@@ -148,10 +160,13 @@ function FocusGarden() {
                   </div>
                 </div>
               </div>
-              <PlantGrid lifetimeSeconds={lifetimeSeconds} dailySeconds={dailySeconds} />
+              <PlantGrid 
+                lifetimeSeconds={lifetimeSeconds} 
+                dailySeconds={dailySeconds}
+                weeklyTimes={weeklyTimes}
+              />
             </div>
           </div>
-
           <div className="w-80">
             <Leaderboard />
           </div>
