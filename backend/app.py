@@ -4,6 +4,7 @@ from datetime import datetime
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
+import heapq
 
 app = Flask(__name__)
 CORS(app)
@@ -12,6 +13,114 @@ CORS(app)
 cred = credentials.Certificate('./focus-garden-firebase-adminsdk-fbsvc-4a6845fd4f.json')
 firebase_admin.initialize_app(cred)
 firestore_db = firestore.client()
+
+# -----------------------------
+# HashTrie Code
+# -----------------------------
+class HashNode:
+    def __init__(self, char: str):
+        self.char = char
+        self.children = {}
+        self.isWord = False
+        self.weight = 0
+
+class HashTrie:
+    def __init__(self):
+        self.root = HashNode("")
+
+    def insert(self, word: str, weight: int = 0) -> None:
+        curr = self.root
+        for ch in word.lower():
+            if ch not in curr.children:
+                curr.children[ch] = HashNode(ch)
+            curr = curr.children[ch]
+        curr.isWord = True
+        curr.weight = weight
+
+    # Basic search to check exact presence
+    def search(self, word: str) -> bool:
+        curr = self.root
+        for ch in word.lower():
+            if ch not in curr.children:
+                return False
+            curr = curr.children[ch]
+        return curr.isWord
+
+# Recursive traversal from a node, collecting all full words
+def preTraversal(root: HashNode, prefix: str, results=None):
+    if results is None:
+        results = []
+
+    if root.isWord:
+        # Store (full_word, weight)
+        results.append((prefix, root.weight))
+
+    for char, child in root.children.items():
+        preTraversal(child, prefix + char, results)
+
+    return results
+
+# Start from a node found by following the prefix
+def searchTrie(root: HashNode, prefix: str) -> list:
+    curr = root
+    for ch in prefix.lower():
+        if ch not in curr.children:
+            return []  # No matches
+        curr = curr.children[ch]
+
+    # Traverse from this node to get all possible completions
+    return preTraversal(curr, prefix.lower())
+
+# Initialize a global trie
+garden_name_trie = HashTrie()
+
+def debug_print_trie(trie):
+    """Traverse the entire trie and print each word with its weight."""
+    def _dfs(node, prefix):
+        if node.isWord:
+            print(f"[WORD] {prefix} (weight={node.weight})")
+        for char, child in node.children.items():
+            _dfs(child, prefix + char)
+
+    print("----- Printing Trie Contents -----")
+    _dfs(trie.root, "")
+    print("----- End of Trie -----")
+    
+def build_trie_from_firestore():
+    """Load all gardenName fields from Firestore into the hash trie."""
+    docs = firestore_db.collection('users').get()
+    for doc in docs:
+        data = doc.to_dict()
+        garden_name = data.get('gardenName', '')
+        if garden_name:  # only insert if non-empty
+            # Insert with weight=0 (or some score if you like)
+            garden_name_trie.insert(garden_name)
+    debug_print_trie(garden_name_trie)
+
+build_trie_from_firestore()
+
+    
+@app.route('/search_garden_name', methods=['GET'])
+def search_garden_name():
+    """Search for garden names by prefix, returning up to 20 results."""
+    prefix = request.args.get('prefix', '').strip()
+    if not prefix:
+        return jsonify([])
+
+    # get all completions that start with prefix
+    matches = searchTrie(garden_name_trie.root, prefix)
+    # matches is a list of (full_garden_name, weight)
+    # e.g. [("my garden", 0), ("my awesome garden", 0), ...]
+
+    # Sort them by alphabetical or any other logic
+    matches.sort(key=lambda x: x[0])
+
+    # limit to top 20
+    top_matches = matches[:5]
+
+    # Return just the garden name strings
+    results = [m[0] for m in top_matches]
+    return jsonify(results)
 
 @app.route('/signup', methods=['POST'])
 def store_signup():
@@ -152,5 +261,3 @@ def update_timers():
 def hello():
     return 'Backend server with Firebase for user signup and time management'
 
-if __name__ == '__main__':
-    app.run(debug=True)
