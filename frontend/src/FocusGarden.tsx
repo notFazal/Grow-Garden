@@ -1,29 +1,34 @@
-// FocusGarden.tsx
 import React, { useState, useEffect, useRef } from 'react';
-import { Flower2, Trophy, Clock, Calendar } from 'lucide-react';
+import { Flower2, Trophy, Clock } from 'lucide-react';
 import { PlantGrid } from './components/PlantGrid';
 import { Leaderboard } from './components/Leaderboard';
-import { getFirestore, doc, getDoc, updateDoc } from "firebase/firestore";
 import { auth } from "./components/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 
-const db = getFirestore();
+// Helper to get the current week number (for weekly resets if you want)
+function getWeekNumber(date: Date) {
+  const firstDayOfYear = new Date(date.getFullYear(), 0, 1);
+  const pastDaysOfYear = (date.getTime() - firstDayOfYear.getTime()) / 86400000;
+  return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
+}
 
 function FocusGarden() {
   const navigate = useNavigate();
 
-  // Timer state variables
-  const [lifetimeSeconds, setLifetimeSeconds] = useState(0);
+  // Timer state
   const [dailySeconds, setDailySeconds] = useState(0);
+  const [lifetimeSeconds, setLifetimeSeconds] = useState(0);
   const [weeklyTimes, setWeeklyTimes] = useState<number[]>([0, 0, 0, 0, 0, 0, 0]);
-  const [isVisible, setIsVisible] = useState(!document.hidden);
-  const [initialized, setInitialized] = useState(false);
 
-  // Refs for the current timer values (for Firebase sync)
+  const [initialized, setInitialized] = useState(false);
+  const [isVisible, setIsVisible] = useState(!document.hidden);
+
+  // Refs to hold current timer values (to pass to setInterval)
   const dailyRef = useRef(dailySeconds);
   const lifetimeRef = useRef(lifetimeSeconds);
   const weeklyRef = useRef(weeklyTimes);
+
   useEffect(() => {
     dailyRef.current = dailySeconds;
     lifetimeRef.current = lifetimeSeconds;
@@ -33,7 +38,7 @@ function FocusGarden() {
   // Get current day index (0 = Sunday, 6 = Saturday)
   const currentDayIndex = new Date().getDay();
 
-  // Listen for authentication state changes.
+  // Listen for auth state changes
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (!user) {
@@ -43,83 +48,107 @@ function FocusGarden() {
     return () => unsubscribe();
   }, [navigate]);
 
-  // On mount, fetch user data from Firestore.
+  // On mount, fetch data from the backend (Flask) for the logged-in user
   useEffect(() => {
     const fetchUserData = async () => {
       const user = auth.currentUser;
       if (user) {
-        const userRef = doc(db, "users", user.uid);
-        const snapshot = await getDoc(userRef);
-        if (snapshot.exists()) {
-          const data = snapshot.data();
+        try {
+          const response = await fetch(`http://localhost:5000/get_user_time/${user.uid}`);
+          if (!response.ok) {
+            // If user doc not found or error
+            console.error("User not found or error retrieving user time");
+            setInitialized(true);
+            return;
+          }
+          const data = await response.json();
+          // Adjust these fields based on how your backend returns them
           setDailySeconds(data.dailyTime || 0);
           setLifetimeSeconds(data.lifetimeTime || 0);
           setWeeklyTimes(data.weeklyTimes || [0, 0, 0, 0, 0, 0, 0]);
+        } catch (err) {
+          console.error("Failed to fetch user data:", err);
         }
       }
       setInitialized(true);
     };
+
     fetchUserData();
   }, []);
 
-  // Listen for page visibility changes.
+  // Listen for page visibility changes
   useEffect(() => {
     const handleVisibilityChange = () => {
       setIsVisible(!document.hidden);
     };
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
   }, []);
 
-  // Update timers every second when page is visible.
+  // Update timers every second (when page is visible)
   useEffect(() => {
-    let timer: NodeJS.Timeout;
+    let timer: NodeJS.Timeout | undefined;
     if (isVisible && initialized) {
       timer = setInterval(() => {
-        setDailySeconds(prev => prev + 1);
-        setLifetimeSeconds(prev => prev + 1);
-        setWeeklyTimes(prev => {
+        setDailySeconds((prev) => prev + 1);
+        setLifetimeSeconds((prev) => prev + 1);
+        setWeeklyTimes((prev) => {
           const newWeekly = [...prev];
           newWeekly[currentDayIndex] = newWeekly[currentDayIndex] + 1;
           return newWeekly;
         });
       }, 1000);
     }
-    return () => timer && clearInterval(timer);
+    return () => {
+      if (timer) clearInterval(timer);
+    };
   }, [isVisible, initialized, currentDayIndex]);
 
-  // Reset daily timer at midnight (when the current day changes).
+  // Reset daily timer at midnight (optional)
   useEffect(() => {
     const now = new Date();
     const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
     const timeUntilMidnight = tomorrow.getTime() - now.getTime();
+
     const resetTimeout = setTimeout(() => {
       setDailySeconds(0);
-      // Note: weeklyTimes for previous days remain unchanged.
+      // weeklyTimes remain for historical data, or you can reset one of them
     }, timeUntilMidnight);
+
     return () => clearTimeout(resetTimeout);
   }, [currentDayIndex]);
 
-  // Update Firebase every 30 seconds with the latest timer values.
+  // Every 30 seconds, send updated data to the backend
   useEffect(() => {
-    const halfMinInterval = setInterval(async () => {
+    const halfMinute = setInterval(() => {
       const user = auth.currentUser;
-      if (user) {
-        const userRef = doc(db, "users", user.uid);
-        const currentWeek = getWeekNumber(new Date());
-        await updateDoc(userRef, {
-          dailyTime: dailyRef.current,
-          lifetimeTime: lifetimeRef.current,
-          weeklyTimes: weeklyRef.current,
-          lastUpdated: new Date().toISOString(),
-          lastWeek: currentWeek
-        });
+      if (initialized && user) {
+        fetch("http://localhost:5000/update_timers", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            username: user.uid,
+            dailyTime: dailyRef.current,
+            lifetimeTime: lifetimeRef.current,
+            weeklyTimes: weeklyRef.current,
+            lastWeek: getWeekNumber(new Date()),
+            gardenName: "My Awesome Garden" // or however you want to set it
+          }),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            if (!data.success) {
+              console.error("Failed to update timers:", data);
+            }
+          })
+          .catch((err) => console.error("Error in update_timers fetch:", err));
       }
-    }, 30 * 1000);
-    return () => clearInterval(halfMinInterval);
-  }, []);
+    }, 30_000); // 30 seconds
 
-  // Helper: format seconds as "xh ym zs"
+    return () => clearInterval(halfMinute);
+  }, [initialized]);
+
+  // Helper: format seconds
   const formatTime = (seconds: number) => {
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
@@ -142,6 +171,7 @@ function FocusGarden() {
             </p>
           )}
         </header>
+
         <div className="flex gap-8">
           <div className="flex-1">
             <div className="bg-white rounded-2xl shadow-xl p-6">
@@ -157,7 +187,7 @@ function FocusGarden() {
                   </div>
                 </div>
               </div>
-              {/* Pass weeklyTimes as an extra prop */}
+              {/* Pass weeklyTimes and dailySeconds to your PlantGrid as you wish */}
               <PlantGrid 
                 lifetimeSeconds={lifetimeSeconds} 
                 dailySeconds={dailySeconds}
@@ -165,6 +195,7 @@ function FocusGarden() {
               />
             </div>
           </div>
+
           <div className="w-80">
             <Leaderboard />
           </div>
@@ -172,13 +203,6 @@ function FocusGarden() {
       </div>
     </div>
   );
-}
-
-// Helper: get week number (used for weekly reset)
-function getWeekNumber(date: Date) {
-  const firstDayOfYear = new Date(date.getFullYear(), 0, 1);
-  const pastDaysOfYear = (date.getTime() - firstDayOfYear.getTime()) / 86400000;
-  return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
 }
 
 export default FocusGarden;
