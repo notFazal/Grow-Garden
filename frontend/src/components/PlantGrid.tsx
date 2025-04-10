@@ -78,8 +78,7 @@ export const PlantGrid: React.FC<PlantGridProps> = ({ lifetimeSeconds, dailySeco
       {/* Daily Timer */}
       <div className="flex items-center justify-center gap-2 text-emerald-600 border-t border-emerald-100 pt-4">
         <Calendar className="w-5 h-5" />
-        <span>
-          {(() => {
+        <span> Daily: {(() => {
             const hrs = Math.floor(dailySeconds / 3600);
             const mins = Math.floor((dailySeconds % 3600) / 60);
             const secs = dailySeconds % 60;

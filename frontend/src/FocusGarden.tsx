@@ -20,6 +20,7 @@ function FocusGarden() {
   const [dailySeconds, setDailySeconds] = useState(0);
   const [lifetimeSeconds, setLifetimeSeconds] = useState(0);
   const [weeklyTimes, setWeeklyTimes] = useState<number[]>([0, 0, 0, 0, 0, 0, 0]);
+  const [gardenName, setGardenName] = useState(""); // <-- new state
 
   const [initialized, setInitialized] = useState(false);
   const [isVisible, setIsVisible] = useState(!document.hidden);
@@ -56,16 +57,15 @@ function FocusGarden() {
         try {
           const response = await fetch(`http://localhost:5000/get_user_time/${user.uid}`);
           if (!response.ok) {
-            // If user doc not found or error
             console.error("User not found or error retrieving user time");
             setInitialized(true);
             return;
           }
           const data = await response.json();
-          // Adjust these fields based on how your backend returns them
           setDailySeconds(data.dailyTime || 0);
           setLifetimeSeconds(data.lifetimeTime || 0);
           setWeeklyTimes(data.weeklyTimes || [0, 0, 0, 0, 0, 0, 0]);
+          setGardenName(data.gardenName || ""); // <-- store name from server
         } catch (err) {
           console.error("Failed to fetch user data:", err);
         }
@@ -119,6 +119,7 @@ function FocusGarden() {
   }, [currentDayIndex]);
 
   // Every 30 seconds, send updated data to the backend
+  // When sending updates to the server:
   useEffect(() => {
     const halfMinute = setInterval(() => {
       const user = auth.currentUser;
@@ -132,7 +133,7 @@ function FocusGarden() {
             lifetimeTime: lifetimeRef.current,
             weeklyTimes: weeklyRef.current,
             lastWeek: getWeekNumber(new Date()),
-            gardenName: "My Awesome Garden" // or however you want to set it
+            gardenName: gardenName
           }),
         })
           .then((res) => res.json())
@@ -143,8 +144,7 @@ function FocusGarden() {
           })
           .catch((err) => console.error("Error in update_timers fetch:", err));
       }
-    }, 30_000); // 30 seconds
-
+    }, 30000);
     return () => clearInterval(halfMinute);
   }, [initialized]);
 
@@ -178,7 +178,7 @@ function FocusGarden() {
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-2xl font-semibold text-emerald-800 flex items-center gap-2">
                   <Trophy className="w-6 h-6" />
-                  Your Garden
+                  {gardenName ? gardenName : "Your Garden"}
                 </h2>
                 <div className="flex items-center gap-4">
                   <div className="flex items-center gap-2 text-emerald-600">
