@@ -16,9 +16,7 @@ function FocusGarden() {
   // Timer state variables
   const [lifetimeSeconds, setLifetimeSeconds] = useState(0);
   const [dailySeconds, setDailySeconds] = useState(0);
-  // Weekly times: one value per weekday (Sunday: index 0 ... Saturday: index 6)
   const [weeklyTimes, setWeeklyTimes] = useState<number[]>([0, 0, 0, 0, 0, 0, 0]);
-  // Instead of storing currentDate locally, we now rely on the stored lastUpdated.
   const [isVisible, setIsVisible] = useState(!document.hidden);
   const [initialized, setInitialized] = useState(false);
 
@@ -35,7 +33,7 @@ function FocusGarden() {
   // Get current day index (0 = Sunday, 6 = Saturday)
   const currentDayIndex = new Date().getDay();
 
-  // Listen for auth state changes; if not signed in, redirect.
+  // Listen for authentication state changes.
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (!user) {
@@ -54,19 +52,7 @@ function FocusGarden() {
         const snapshot = await getDoc(userRef);
         if (snapshot.exists()) {
           const data = snapshot.data();
-          // Compare lastUpdated (if exists) with today's date.
-          // If the stored date is different from today's date, reset dailySeconds.
-          if (data.lastUpdated) {
-            const lastUpdatedDate = new Date(data.lastUpdated).toDateString();
-            const today = new Date().toDateString();
-            if (lastUpdatedDate !== today) {
-              setDailySeconds(0);
-            } else {
-              setDailySeconds(data.dailyTime || 0);
-            }
-          } else {
-            setDailySeconds(data.dailyTime || 0);
-          }
+          setDailySeconds(data.dailyTime || 0);
           setLifetimeSeconds(data.lifetimeTime || 0);
           setWeeklyTimes(data.weeklyTimes || [0, 0, 0, 0, 0, 0, 0]);
         }
@@ -82,8 +68,7 @@ function FocusGarden() {
       setIsVisible(!document.hidden);
     };
     document.addEventListener('visibilitychange', handleVisibilityChange);
-    return () =>
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
   }, []);
 
   // Update timers every second when page is visible.
@@ -103,7 +88,19 @@ function FocusGarden() {
     return () => timer && clearInterval(timer);
   }, [isVisible, initialized, currentDayIndex]);
 
-  // Update Firebase every 30 seconds, including the lastUpdated timestamp.
+  // Reset daily timer at midnight (when the current day changes).
+  useEffect(() => {
+    const now = new Date();
+    const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+    const timeUntilMidnight = tomorrow.getTime() - now.getTime();
+    const resetTimeout = setTimeout(() => {
+      setDailySeconds(0);
+      // Note: weeklyTimes for previous days remain unchanged.
+    }, timeUntilMidnight);
+    return () => clearTimeout(resetTimeout);
+  }, [currentDayIndex]);
+
+  // Update Firebase every 30 seconds with the latest timer values.
   useEffect(() => {
     const halfMinInterval = setInterval(async () => {
       const user = auth.currentUser;
@@ -160,6 +157,7 @@ function FocusGarden() {
                   </div>
                 </div>
               </div>
+              {/* Pass weeklyTimes as an extra prop */}
               <PlantGrid 
                 lifetimeSeconds={lifetimeSeconds} 
                 dailySeconds={dailySeconds}
