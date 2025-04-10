@@ -78,18 +78,21 @@ export const PlantGrid: React.FC<PlantGridProps> = ({ lifetimeSeconds, dailySeco
       {/* Daily Timer */}
       <div className="flex items-center justify-center gap-2 text-emerald-600 border-t border-emerald-100 pt-4">
         <Calendar className="w-5 h-5" />
-        <span>Daily Progress: {(() => {
-          const hrs = Math.floor(dailySeconds / 3600);
-          const mins = Math.floor((dailySeconds % 3600) / 60);
-          const secs = dailySeconds % 60;
-          return `${hrs > 0 ? `${hrs}h ` : ''}${mins}m ${secs}s`;
-        })()}</span>
+        <span>
+          {(() => {
+            const hrs = Math.floor(dailySeconds / 3600);
+            const mins = Math.floor((dailySeconds % 3600) / 60);
+            const secs = dailySeconds % 60;
+            return `${hrs > 0 ? `${hrs}h ` : ''}${mins}m ${secs}s`;
+          })()}
+        </span>
       </div>
       
       {/* Weekly Row */}
       <div className="grid grid-cols-7 gap-4">
         {weekDays.map((day, index) => {
           // Use the weeklyTimes array to compute progress for each day.
+          // For the current day, this value is in progress.
           const progress = weeklyTimes[index] 
             ? Math.min(100, (weeklyTimes[index] / weeklyThreshold) * 100)
             : 0;
@@ -98,7 +101,8 @@ export const PlantGrid: React.FC<PlantGridProps> = ({ lifetimeSeconds, dailySeco
               key={`weekly-${index}`}
               growth={progress}
               isWeekly={true}
-              isLocked={progress < 100}
+              // Always set isLocked to false for weekly plants so the progress bar is shown.
+              isLocked={false}
               dayLabel={day}
             />
           );
