@@ -5,7 +5,6 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "./firebase.ts";
-import "./Login.css";
 
 interface LoginFormInputs {
   email: string;
@@ -35,17 +34,54 @@ function Login() {
   };
 
   return (
-    <>
-      <form className="Login" onSubmit={handleSubmit(onSubmit)}>
-        <p>Login</p>
-        <h3>Email</h3>
-        <input type="email" {...register("email", { required: true })} />
-        {errors.email && <span style={{ color: "red" }}>*Email* is mandatory</span>}
-        <h3>Password</h3>
-        <input type="password" {...register("password", { required: true })} />
-        <input type="submit" style={{ backgroundColor: "#a1eafb" }} />
-      </form>
-    </>
+	<>
+	  <form
+		onSubmit={handleSubmit(onSubmit)}
+		className="bg-white p-6 rounded-2xl shadow-xl space-y-4 w-full max-w-md mx-auto"
+	  >
+		<h2 className="text-2xl font-semibold text-emerald-800">Login</h2>
+  
+		{/* Email */}
+		<div>
+		  <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+			Email
+		  </label>
+		  <input
+			id="email"
+			type="email"
+			{...register("email", { required: true })}
+			className="mt-1 block w-full border border-gray-300 rounded-md p-2 shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500"
+		  />
+		  {errors.email && (
+			<span className="text-sm text-red-500 mt-1 block">*Email* is mandatory</span>
+		  )}
+		</div>
+  
+		{/* Password */}
+		<div>
+		  <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+			Password
+		  </label>
+		  <input
+			id="password"
+			type="password"
+			{...register("password", { required: true })}
+			className="mt-1 block w-full border border-gray-300 rounded-md p-2 shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500"
+		  />
+		  {errors.password && (
+			<span className="text-sm text-red-500 mt-1 block">*Password* is mandatory</span>
+		  )}
+		</div>
+  
+		{/* Submit */}
+		<button
+		  type="submit"
+		  className="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-medium py-2 px-4 rounded-md transition-colors"
+		>
+		  Login
+		</button>
+	  </form>
+	</>
   );
 }
 

@@ -5,7 +5,6 @@ import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "./firebase.ts";
 import { getFirestore, doc, setDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
-import "./SignUp.css";
 
 interface FormData {
   name: string;
@@ -54,21 +53,67 @@ function getWeekNumber(date: Date) {
   return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
 }
 
-  return (
-    <>
-      <form className="SignUp" onSubmit={handleSubmit(onSubmit)}>
-        <p>Create Garden</p>
-        <h3>Garden Name</h3>
-        <input type="text" {...register("name")} />
-        <h3>Email</h3>
-        <input type="email" {...register("email", { required: true })} />
-        {errors.email && <span style={{ color: "red" }}>*Email* is mandatory</span>}
-        <h3>Password</h3>
-        <input type="password" {...register("password", { required: true })} />
-        <input type="submit" style={{ backgroundColor: "#a1eafb" }} />
-      </form>
-    </>
+return (
+	<>
+	  <form
+		className="bg-white p-6 rounded-2xl shadow-xl space-y-4 w-full max-w-md mx-auto"
+		onSubmit={handleSubmit(onSubmit)}
+	  >
+		<h2 className="text-2xl font-semibold text-emerald-800">Create Garden</h2>
+  
+		{/* Garden Name */}
+		<div>
+		  <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+			Garden Name
+		  </label>
+		  <input
+			id="name"
+			type="text"
+			{...register("name")}
+			className="mt-1 block w-full border border-gray-300 rounded-md p-2 shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500"
+		  />
+		</div>
+  
+		{/* Email */}
+		<div>
+		  <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+			Email
+		  </label>
+		  <input
+			id="email"
+			type="email"
+			{...register("email", { required: true })}
+			className="mt-1 block w-full border border-gray-300 rounded-md p-2 shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500"
+		  />
+		  {errors.email && (
+			<span className="text-sm text-red-500 mt-1 block">*Email* is mandatory</span>
+		  )}
+		</div>
+  
+		{/* Password */}
+		<div>
+		  <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+			Password
+		  </label>
+		  <input
+			id="password"
+			type="password"
+			{...register("password", { required: true })}
+			className="mt-1 block w-full border border-gray-300 rounded-md p-2 shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500"
+		  />
+		</div>
+  
+		{/* Submit */}
+		<button
+		  type="submit"
+		  className="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-medium py-2 px-4 rounded-md transition-colors"
+		>
+		  Create Garden
+		</button>
+	  </form>
+	</>
   );
+  
 }
 
 export default SignUp;
