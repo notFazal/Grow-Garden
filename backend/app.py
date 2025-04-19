@@ -4,13 +4,14 @@ from datetime import datetime
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
+from pybloom_live import BloomFilter
 import heapq
 
 app = Flask(__name__)
 CORS(app)
 
 # --- Firebase Admin SDK Initialization ---
-cred = credentials.Certificate('./focus-garden-firebase-adminsdk-fbsvc-4a6845fd4f.json')
+cred = credentials.Certificate('./focus-garden-firebase-adminsdk-fbsvc-bdb29fe927.json')
 firebase_admin.initialize_app(cred)
 firestore_db = firestore.client()
 
@@ -99,10 +100,34 @@ def build_trie_from_firestore():
 
 build_trie_from_firestore()
 
+# Initiliaze bloom filter
+garden_name_bloom = BloomFilter(10000, 0.01)
+# storing the current names into the bloom filter
+def build_filters_from_firestore():
+    docs = firestore_db.collection('users').get()
+    for doc in docs:
+        data = doc.to_dict()
+        garden_name = data.get('gardenName', '')
+        if garden_name:
+            garden_name_bloom.add(garden_name.strip().lower())
+
+build_filters_from_firestore()
+# checks for the garden name 
+@app.route('/check_garden_name', methods=['GET'])
+def check_garden_name():
+    garden_name = request.args.get('name', '').strip().lower()
+    if not garden_name:
+        return jsonify({'error': 'Missing name'}), 400
+
+    # Check in Bloom filter
+    if garden_name in garden_name_bloom:
+        return jsonify({'available': False})
+    else:
+        return jsonify({'available': True})
     
 @app.route('/search_garden_name', methods=['GET'])
 def search_garden_name():
-    """Search for garden names by prefix, returning up to 20 results."""
+    # Search for garden names by prefix, returning up to 20 results
     prefix = request.args.get('prefix', '').strip()
     if not prefix:
         return jsonify([])
@@ -146,6 +171,8 @@ def store_signup():
                 'lastWeek': 0
             })
             print(f"Signup recorded for user {username} with initial time 0 seconds and name {name}")
+            # bloom filter adding new name
+            garden_name_bloom.add(name.strip().lower())
             return jsonify({'message': f'Signup recorded for user: {username}'}), 201
         else:
             print(f"User {username} already exists.")

@@ -13,12 +13,21 @@ interface FormData {
 }
 
 function SignUp() {
-  const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
- const navigate = useNavigate();
- const db = getFirestore();
+  const { register, handleSubmit, setError, formState: { errors } } = useForm<FormData>();
+  const navigate = useNavigate();
+  const db = getFirestore();
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
+		// if the name is chosen the user will be prompted to redo
+		const isAvailable = await checkNameAvailable(data.name);
+		if (!isAvailable) {
+		  setError("name", {
+			type: "manual",
+			message: "That garden name is already taken. Please choose another.",
+		  });
+		  return;
+		}
       // Create a new user with email and password
       const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password);
       const user = userCredential.user;
@@ -42,8 +51,19 @@ function SignUp() {
       navigate("/FocusGarden");
 
     } catch (error: any) {
-      console.error("Error signing up:", error.message);
+        console.error("Error signing up:", error.message);
     }
+  };
+  // checking if the name is available
+  const checkNameAvailable = async (name: string): Promise<boolean> => {
+	try {
+	  const response = await fetch(`http://localhost:5000/check_garden_name?name=${name}`);
+	  const data = await response.json();
+	  return data.available;
+	} catch (err) {
+	  console.error("Error checking garden name availability:", err);
+	  return false; // default to "taken" if error
+	}
   };
 
 // Helper function to get current week number (optional)
@@ -69,9 +89,12 @@ return (
 		  <input
 			id="name"
 			type="text"
-			{...register("name")}
+			{...register("name", { required: "Garden name is required" })}
 			className="mt-1 block w-full border border-gray-300 rounded-md p-2 shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500"
 		  />
+		  {errors.name && (
+    	    <span className="text-sm text-red-500 mt-1 block">{errors.name.message}</span>
+  		  )}
 		</div>
   
 		{/* Email */}
