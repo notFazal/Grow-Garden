@@ -52,6 +52,10 @@ function SignUp() {
 
     } catch (error: any) {
         console.error("Error signing up:", error.message);
+		setError("password", {
+			type: "manual",
+			message: "Email must contain valid domain. Password must be a minimum of 6 characters",
+		  });
     }
   };
   // checking if the name is available
@@ -89,7 +93,7 @@ return (
 		  <input
 			id="name"
 			type="text"
-			{...register("name", { required: "Garden name is required" })}
+			{...register("name", { required: "*Garden Name* is mandatory" })}
 			className="mt-1 block w-full border border-gray-300 rounded-md p-2 shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500"
 		  />
 		  {errors.name && (
@@ -120,10 +124,15 @@ return (
 		  </label>
 		  <input
 			id="password"
+
 			type="password"
-			{...register("password", { required: true })}
+			{...register("password", { required: "*Password* is mandatory" })}
 			className="mt-1 block w-full border border-gray-300 rounded-md p-2 shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500"
 		  />
+		  {errors.password && ( <span className="text-sm text-red-500 mt-1 block">{errors.password.message}</span>)
+		  }
+		  
+		  
 		</div>
   
 		{/* Submit */}
