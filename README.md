@@ -1,28 +1,34 @@
-# Full Stack Group Project Template
-This repository is a template for your Full Stack Group Project. It includes a basic project structure, along with Markdown examples for weekly meeting notes and the project README.  
-
-Use this repository to store your code and collaborate throughout all FGP stages, starting from FGP3.  
-
-**Note:** This layout is an example. The official requirements for your project README will be provided later in the course.  
+# Focus Garden
 
 ## About<!-- Required -->
-<!-- 
-* information about the project 
-* 
-* keep it short and sweet
--->
+Created By:
+**Fernando Caudillo Tafoya** (Backend Developer),
+**Fazal Quadri** (Project Lead),
+**Helmer Gomez** (Frontend Developer).
 
+This application aims to reduce user's not focusing on what is important. Their garden grows as long as they are on the website and not being distracted on something else. To ensure unique garden names a Bloom Filter is used. For quick and efficient lookup of other users a Trie is used.
 
 ## How to use this project<!-- Required -->
-<!-- 
-* Here you may add information about how 
-* 
-* and why to use this project.
--->
--
--
--
 
+This document assumes you have some version of python3, node (npm) installed on your local computer.
+
+### a. Set up Backend
+* Move into the backend directory -  ` cd backend `
+* Create a new virtual environment - ` python3 -m venv .venv `
+* Activate the virtual environment
+  * For Windows : ` .\.venv\Scripts\activate `
+  * For Mac : ` source .venv/bin/activate `
+* You will now see a (.venv) infront of your command line
+* To install all dependencies and packages, run ` pip3 install -r requirements.txt `
+* Run the flask backend in debug mode for automatic reloading : ` flask --app app.py --debug run `
+*  Your flask server will now be running on ` localhost:PORT `! You can look at the terminal for the port number
+
+### b. Set up Frontend
+* Move into the frontend directory - ` cd frontend `
+* Install all packages by running ` npm install `
+* To run the react frontend - ` npm run dev `
+* Your react app is now running on ` localhost:PORT `! You can follow the link from the terminal for the port number.
+* **Note** If failed to run due to incompatible node_modules or package-lock.json, run ` rm -rf node_modules package-lock.json `, and reinstall the packages
 
 ## Demo<!-- Required -->
 <!-- 
