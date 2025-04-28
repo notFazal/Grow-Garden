@@ -6,7 +6,7 @@ import { auth } from "./components/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 
-// Helper to get the current week number (for weekly resets if you want)
+// Helper to get the current week number
 function getWeekNumber(date: Date) {
   const firstDayOfYear = new Date(date.getFullYear(), 0, 1);
   const pastDaysOfYear = (date.getTime() - firstDayOfYear.getTime()) / 86400000;
@@ -65,7 +65,7 @@ function FocusGarden() {
           setDailySeconds(data.dailyTime || 0);
           setLifetimeSeconds(data.lifetimeTime || 0);
           setWeeklyTimes(data.weeklyTimes || [0, 0, 0, 0, 0, 0, 0]);
-          setGardenName(data.gardenName || ""); // <-- store name from server
+          setGardenName(data.gardenName || "");
         } catch (err) {
           console.error("Failed to fetch user data:", err);
         }
@@ -104,7 +104,7 @@ function FocusGarden() {
     };
   }, [isVisible, initialized, currentDayIndex]);
 
-  // Reset daily timer at midnight (optional)
+  // Reset daily timer at midnight
   useEffect(() => {
     const now = new Date();
     const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
@@ -112,14 +112,12 @@ function FocusGarden() {
 
     const resetTimeout = setTimeout(() => {
       setDailySeconds(0);
-      // weeklyTimes remain for historical data, or you can reset one of them
     }, timeUntilMidnight);
 
     return () => clearTimeout(resetTimeout);
   }, [currentDayIndex]);
 
   // Every 30 seconds, send updated data to the backend
-  // When sending updates to the server:
   useEffect(() => {
     const halfMinute = setInterval(() => {
       const user = auth.currentUser;
@@ -187,7 +185,7 @@ function FocusGarden() {
                   </div>
                 </div>
               </div>
-              {/* Pass weeklyTimes and dailySeconds to your PlantGrid as you wish */}
+              {}
               <PlantGrid 
                 lifetimeSeconds={lifetimeSeconds} 
                 dailySeconds={dailySeconds}
