@@ -20,7 +20,7 @@ function FocusGarden() {
   const [dailySeconds, setDailySeconds] = useState(0);
   const [lifetimeSeconds, setLifetimeSeconds] = useState(0);
   const [weeklyTimes, setWeeklyTimes] = useState<number[]>([0, 0, 0, 0, 0, 0, 0]);
-  const [gardenName, setGardenName] = useState(""); // <-- new state
+  const [gardenName, setGardenName] = useState("");
 
   const [initialized, setInitialized] = useState(false);
   const [isVisible, setIsVisible] = useState(!document.hidden);
