@@ -6,12 +6,10 @@ Use this repository to store your code and collaborate throughout all FGP stages
 **Note:** This layout is an example. The official requirements for your project README will be provided later in the course.  
 
 ## About<!-- Required -->
-<!-- 
-* information about the project 
-* 
-* keep it short and sweet
--->
-
+Created By:
+Fernando Caudillo Tafoya (Backend Developer)
+Fazal Quadri (Project Lead)
+Helmer Gomez (Frontend Developer)
 
 ## How to use this project<!-- Required -->
 <!-- 
