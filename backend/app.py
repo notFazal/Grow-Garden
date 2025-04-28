@@ -23,7 +23,6 @@ class HashNode:
         self.char = char
         self.children = {}
         self.isWord = False
-        self.weight = 0
 
 class HashTrie:
     def __init__(self):
@@ -36,9 +35,7 @@ class HashTrie:
                 curr.children[ch] = HashNode(ch)
             curr = curr.children[ch]
         curr.isWord = True
-        curr.weight = weight
 
-    # Basic search to check exact presence
     def search(self, word: str) -> bool:
         curr = self.root
         for ch in word.lower():
@@ -53,8 +50,7 @@ def preTraversal(root: HashNode, prefix: str, results=None):
         results = []
 
     if root.isWord:
-        # Store (full_word, weight)
-        results.append((prefix, root.weight))
+        results.append(prefix)
 
     for char, child in root.children.items():
         preTraversal(child, prefix + char, results)
@@ -74,18 +70,6 @@ def searchTrie(root: HashNode, prefix: str) -> list:
 
 # Initialize a global trie
 garden_name_trie = HashTrie()
-
-def debug_print_trie(trie):
-    """Traverse the entire trie and print each word with its weight."""
-    def _dfs(node, prefix):
-        if node.isWord:
-            print(f"[WORD] {prefix} (weight={node.weight})")
-        for char, child in node.children.items():
-            _dfs(child, prefix + char)
-
-    print("----- Printing Trie Contents -----")
-    _dfs(trie.root, "")
-    print("----- End of Trie -----")
     
 def build_trie_from_firestore():
     """Load all gardenName fields from Firestore into the hash trie."""
@@ -94,9 +78,7 @@ def build_trie_from_firestore():
         data = doc.to_dict()
         garden_name = data.get('gardenName', '')
         if garden_name:  # only insert if non-empty
-            # Insert with weight=0 (or some score if you like)
             garden_name_trie.insert(garden_name)
-    debug_print_trie(garden_name_trie)
 
 build_trie_from_firestore()
 
@@ -127,24 +109,22 @@ def check_garden_name():
     
 @app.route('/search_garden_name', methods=['GET'])
 def search_garden_name():
-    # Search for garden names by prefix, returning up to 20 results
+    # Search for garden names by prefix
     prefix = request.args.get('prefix', '').strip()
     if not prefix:
         return jsonify([])
 
     # get all completions that start with prefix
     matches = searchTrie(garden_name_trie.root, prefix)
-    # matches is a list of (full_garden_name, weight)
-    # e.g. [("my garden", 0), ("my awesome garden", 0), ...]
 
-    # Sort them by alphabetical or any other logic
+    # Sort them by alphabetical
     matches.sort(key=lambda x: x[0])
 
-    # limit to top 20
+    # limit to top 5
     top_matches = matches[:5]
 
     # Return just the garden name strings
-    results = [m[0] for m in top_matches]
+    results = [m for m in top_matches]
     return jsonify(results)
 
 @app.route('/signup', methods=['POST'])
@@ -163,7 +143,6 @@ def store_signup():
             user_doc_ref.set({
                 'totalTimeSeconds': 0,
                 'name': name,
-                # You can store dailyTime, lifetimeTime, weeklyTimes, etc. here if you wish:
                 'dailyTime': 0,
                 'lifetimeTime': 0,
                 'weeklyTimes': [0, 0, 0, 0, 0, 0, 0],
@@ -196,7 +175,6 @@ def add_time():
 
     try:
         user_doc_ref = firestore_db.collection('users').document(username)
-        # Use Firestore's increment if desired:
         firestore_db.run_transaction(
             lambda transaction: transaction.update(
                 user_doc_ref,
@@ -254,7 +232,7 @@ def update_timers():
     daily_time = data['dailyTime']
     lifetime_time = data['lifetimeTime']
     weekly_times = data['weeklyTimes']
-    last_week = data.get('lastWeek', 0)  # or handle however you wish
+    last_week = data.get('lastWeek', 0)
     garden_name = data.get('gardenName', '')
 
     try:
