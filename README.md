@@ -11,7 +11,11 @@ This application aims to reduce user's not focusing on what is important. Their 
 ## How to use this project<!-- Required -->
 
 # Set up Backend
-* Move into the backend directory - ''' cd backend'''
+* Move into the backend directory - <pre>
+``` 
+cd backend
+```
+</pre>
 
 ## Demo<!-- Required -->
 <!-- 
