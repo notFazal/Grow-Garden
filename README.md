@@ -10,7 +10,7 @@ This application aims to reduce user's not focusing on what is important. Their 
 
 ## How to use this project<!-- Required -->
 
-This document assumes you have some version of python3 installed on your local computer.
+This document assumes you have some version of python3, node (npm) installed on your local computer.
 
 ### a. Set up Backend
 * Move into the backend directory -  ` cd backend `
@@ -21,7 +21,13 @@ This document assumes you have some version of python3 installed on your local c
 * You will now see a (.venv) infront of your command line
 * To install all dependencies and packages, run ` pip3 install -r requirements.txt `
 * Run the flask backend in debug mode for automatic reloading : ` flask --app app.py --debug run `
-*  Your flask server will now be running on ` localhost:PORT `! You can look at the terminal for the port number  
+*  Your flask server will now be running on ` localhost:PORT `! You can look at the terminal for the port number
+
+### b. Set up Frontend
+* Move into the frontend directory - ` cd frontend `
+* Install all packages by running ` npm install `
+* To run the react frontend - ` npm run dev `
+* Your react app is now running on ` localhost:PORT `! You can follow the link from the terminal for the port number.
 
 ## Demo<!-- Required -->
 <!-- 
