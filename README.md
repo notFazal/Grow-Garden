@@ -2,9 +2,10 @@
 
 ## About<!-- Required -->
 Created By:
-Fernando Caudillo Tafoya (Backend Developer)
-Fazal Quadri (Project Lead)
-Helmer Gomez (Frontend Developer)
+Fernando Caudillo Tafoya (Backend Developer),
+Fazal Quadri (Project Lead),
+Helmer Gomez (Frontend Developer).
+
 This application aims to reduce user's not focusing on what is important. 
 
 ## How to use this project<!-- Required -->
