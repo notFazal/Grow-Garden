@@ -10,8 +10,11 @@ This application aims to reduce user's not focusing on what is important. Their 
 
 ## How to use this project<!-- Required -->
 
-# Set up Backend
+This document assumes you have some version of python3 installed on your local computer.
+
+### Set up Backend
 * Move into the backend directory -  ``` cd backend ```
+* Create a new virtual environment - ``` python3 -m venv .venv ```
 
 ## Demo<!-- Required -->
 <!-- 
