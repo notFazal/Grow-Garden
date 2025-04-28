@@ -2,9 +2,9 @@
 
 ## About<!-- Required -->
 Created By:
-Fernando Caudillo Tafoya (Backend Developer),
-Fazal Quadri (Project Lead),
-Helmer Gomez (Frontend Developer).
+**Fernando Caudillo Tafoya** (Backend Developer),
+**Fazal Quadri** (Project Lead),
+**Helmer Gomez** (Frontend Developer).
 
 This application aims to reduce user's not focusing on what is important. Their garden grows as long as they are on the website and not being distracted on something else. To ensure unique garden names a Bloom Filter is used. For quick and efficient lookup of other users a Trie is used.
 
@@ -28,6 +28,7 @@ This document assumes you have some version of python3, node (npm) installed on 
 * Install all packages by running ` npm install `
 * To run the react frontend - ` npm run dev `
 * Your react app is now running on ` localhost:PORT `! You can follow the link from the terminal for the port number.
+* **Note** If failed to run due to incompatible node_modules or package-lock.json, run ` rm -rf node_modules package-lock.json `, and reinstall the packages
 
 ## Demo<!-- Required -->
 <!-- 
