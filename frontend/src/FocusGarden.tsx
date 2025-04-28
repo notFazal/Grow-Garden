@@ -160,7 +160,7 @@ function FocusGarden() {
         <header className="mb-8 text-center">
           <div className="flex items-center justify-center gap-2 mb-4">
             <Flower2 className="w-8 h-8 text-emerald-600" />
-            <h1 className="text-4xl font-bold text-emerald-800">GrowTime</h1>
+            <h1 className="text-4xl font-bold text-emerald-800">Focus Garden</h1>
           </div>
           <p className="text-emerald-600">Grow your garden while staying focused</p>
           {!isVisible && (

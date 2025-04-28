@@ -70,7 +70,7 @@ function SignUp() {
 	}
   };
 
-// Helper function to get current week number (optional)
+// Helper function to get current week number 
 function getWeekNumber(date: Date) {
   const firstDayOfYear = new Date(date.getFullYear(), 0, 1);
   const pastDaysOfYear = (date.getTime() - firstDayOfYear.getTime()) / 86400000;
