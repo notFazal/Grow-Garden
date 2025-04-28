@@ -12,15 +12,16 @@ This application aims to reduce user's not focusing on what is important. Their 
 
 This document assumes you have some version of python3 installed on your local computer.
 
-### Set up Backend
+### a. Set up Backend
 * Move into the backend directory -  ` cd backend `
 * Create a new virtual environment - ` python3 -m venv .venv `
 * Activate the virtual environment
   * For Windows : ` .\.venv\Scripts\activate `
   * For Mac : ` source .venv/bin/activate `
 * You will now see a (.venv) infront of your command line
-* To install all dependencies and packages, run ` pip3 install -r requirements.txt `   
-  
+* To install all dependencies and packages, run ` pip3 install -r requirements.txt `
+* Run the flask backend in debug mode for automatic reloading : ` flask --app app.py --debug run `
+*  Your flask server will now be running on ` localhost:PORT `! You can look at the terminal for the port number  
 
 ## Demo<!-- Required -->
 <!-- 
