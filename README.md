@@ -6,7 +6,7 @@ Fernando Caudillo Tafoya (Backend Developer),
 Fazal Quadri (Project Lead),
 Helmer Gomez (Frontend Developer).
 
-This application aims to reduce user's not focusing on what is important. Their garden grows as long as they are on the website and not being distracted on something else.
+This application aims to reduce user's not focusing on what is important. Their garden grows as long as they are on the website and not being distracted on something else. To ensure unique garden names a Bloom Filter is used. For quick and efficient lookup of other users a Trie is used.
 
 ## How to use this project<!-- Required -->
 
