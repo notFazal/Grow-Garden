@@ -9,15 +9,9 @@ Helmer Gomez (Frontend Developer).
 This application aims to reduce user's not focusing on what is important. Their garden grows as long as they are on the website and not being distracted on something else.
 
 ## How to use this project<!-- Required -->
-<!-- 
-* Here you may add information about how 
-* 
-* and why to use this project.
--->
--
--
--
 
+# Set up Backend
+* Move into the backend directory - ''' cd backend'''
 
 ## Demo<!-- Required -->
 <!-- 
