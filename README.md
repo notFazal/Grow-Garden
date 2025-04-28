@@ -40,7 +40,8 @@ After backend and frontend setup, navigate to the link provided by the frontend.
 
 ### Main Page
 * Displays user's lifetime screen time, their weekly screen time, and leaderboard featuring top 5 garden's for the day.
-![Screenshot 2025-04-28 at 5 34 34 PM](https://github.com/user-attachments/assets/b8061be6-eec5-4750-8bdb-5d6f59a899b9)
+![Screenshot 2025-04-28 at 6 33 13 PM](https://github.com/user-attachments/assets/d6ed488d-b124-406e-9cd5-d2bdad3b91b0)
+
 
 
 
