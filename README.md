@@ -31,11 +31,13 @@ This document assumes you have some version of python3, node (npm) installed on 
 * **Note** If failed to run due to incompatible node_modules or package-lock.json, run ` rm -rf node_modules package-lock.json `, and reinstall the packages
 
 ## Demo<!-- Required -->
-<!-- 
-* You can add a demo here GH supports images/ GIFs/videos 
-* 
-* It's recommended to use GIFs as they are more dynamic
--->
+
+After backend and frontend setup, navigate to the link provided by the frontend.
+
+### Sign in
+Use your login info to retrieve your garden or create a new account.
+![Screenshot 2025-04-28 at 5 16 35 PM](https://github.com/user-attachments/assets/ad6b9ff0-20ca-439b-a7ed-2ecad4c36725)
+
 
 
 ## Table of Contents<!-- Optional -->
