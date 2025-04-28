@@ -13,8 +13,14 @@ This application aims to reduce user's not focusing on what is important. Their 
 This document assumes you have some version of python3 installed on your local computer.
 
 ### Set up Backend
-* Move into the backend directory -  ``` cd backend ```
-* Create a new virtual environment - ``` python3 -m venv .venv ```
+* Move into the backend directory -  ` cd backend `
+* Create a new virtual environment - ` python3 -m venv .venv `
+* Activate the virtual environment
+  * For Windows : ` .\.venv\Scripts\activate `
+  * For Mac : ` source .venv/bin/activate `
+* You will now see a (.venv) infront of your command line
+* To install all dependencies and packages, run ` pip3 install -r requirements.txt `   
+  
 
 ## Demo<!-- Required -->
 <!-- 
