@@ -113,10 +113,12 @@ Firebase – Used for authentication and real-time database storage, simplifying
     Took weekly meeting notes and tracked overall project progress.
     Implemented the Trie structure for efficient leaderboard searching.
     Assisted both frontend and backend as needed (flex role) to balance workload.
+
 **Helmer Gomez** (Backend Developer) - 
     Integrated Firebase to manage user authentication and data storage.
     Implemented the Bloom Filter for username uniqueness and Trie structure for efficient leaderboard searching.
     Ensured proper communication between the backend and frontend systems.
+
 **Fernando Caudillo Tafoya** (Frontend Developer) - 
     Built the frontend interface using React, including the daily and weekly garden grids.
     Designed and implemented the login/signup pages, main dashboard, and leaderboard UI.
@@ -145,6 +147,9 @@ Firebase – Used for authentication and real-time database storage, simplifying
 <!-- 
 * You can add contacts information like your email and social media account 
 * 
+
+* Also it's common to add some PR guidance.
+-->
 Feel free to open an issue if you find bugs or have suggestions for improvement.
 Pull Request Guidelines:
     Fork the repository.
@@ -152,18 +157,16 @@ Pull Request Guidelines:
     Commit your changes (git commit -m 'Add your feature').
     Push to the branch (git push origin feature/yourFeature).
     Open a Pull Request.
-* Also it's common to add some PR guidance.
--->
-
+    
 ## Contact<!-- Required -->
 <!-- 
 * add your email and contact info here
+* 
+
+-->
     Fernando Caudillo Tafoya - fcaud2@uic.edu
     Fazal Quadri - mquad5@uic.edu
     Helmer Gomez - hgomez
-* 
--->
-
 
 ## License<!-- Optional -->
 <!-- 
