@@ -190,14 +190,53 @@ def add_time():
 def get_user_time(username):
     """
     Returns a single user's data from Firestore, including dailyTime, lifetimeTime, etc.
+    Also resets dailyTime or weeklyTimes if it's a new day or new week.
     """
     try:
-        user_doc = firestore_db.collection('users').document(username).get()
+        user_doc_ref = firestore_db.collection('users').document(username)
+        user_doc = user_doc_ref.get()
         if user_doc.exists:
             user_data = user_doc.to_dict()
+
+            now = datetime.utcnow()
+            updated = False
+
+            # Reset dailyTime if it's a different day
+            last_updated_str = user_data.get('lastUpdated')
+            if last_updated_str:
+                try:
+                    last_updated = datetime.strptime(last_updated_str, "%Y-%m-%dT%H:%M:%S.%f")
+                    if last_updated.date() != now.date():
+                        user_data['dailyTime'] = 0
+                        updated = True
+                except ValueError:
+                    # Handle badly formatted timestamp (fallback: reset)
+                    user_data['dailyTime'] = 0
+                    updated = True
+
+            # Reset weeklyTimes if different week
+            user_last_week = user_data.get('lastWeek', 0)
+            current_week = now.isocalendar()[1]  # ISO week number (Monday-first)
+
+            if user_last_week != current_week:
+                user_data['weeklyTimes'] = [0, 0, 0, 0, 0, 0, 0]
+                updated = True
+
+            # If we updated anything, save it back to Firestore
+            if updated:
+                user_data['lastUpdated'] = now.isoformat()
+                user_data['lastWeek'] = current_week
+                user_doc_ref.update({
+                    'dailyTime': user_data['dailyTime'],
+                    'weeklyTimes': user_data['weeklyTimes'],
+                    'lastUpdated': user_data['lastUpdated'],
+                    'lastWeek': user_data['lastWeek']
+                })
+
             return jsonify(user_data), 200
         else:
             return jsonify({'error': f'User {username} not found'}), 404
+
     except Exception as e:
         print(f"Error getting user time from Firestore: {e}")
         return jsonify({'error': f'Failed to get user time: {str(e)}'}), 500
@@ -222,6 +261,7 @@ def update_timers():
     """
     Receives the user's dailyTime, lifetimeTime, weeklyTimes, etc. from the React front end.
     Saves it to Firestore every 30 seconds.
+    Also resets dailyTime or weeklyTimes if a new day/week started.
     """
     data = request.get_json()
     required_fields = ['username', 'dailyTime', 'lifetimeTime', 'weeklyTimes']
@@ -232,32 +272,55 @@ def update_timers():
     daily_time = data['dailyTime']
     lifetime_time = data['lifetimeTime']
     weekly_times = data['weeklyTimes']
-    last_week = data.get('lastWeek', 0)
+    current_week = data.get('lastWeek', 0)
     garden_name = data.get('gardenName', '')
 
     try:
         user_doc_ref = firestore_db.collection('users').document(username)
-        # If doc doesn't exist, create it
         doc = user_doc_ref.get()
         if not doc.exists:
+            # Create a new document if it doesn't exist
             user_doc_ref.set({
                 'dailyTime': daily_time,
                 'lifetimeTime': lifetime_time,
                 'weeklyTimes': weekly_times,
                 'lastUpdated': datetime.utcnow().isoformat(),
-                'lastWeek': last_week,
+                'lastWeek': current_week,
                 'gardenName': garden_name
             })
         else:
-            user_doc_ref.update({
+            user_data = doc.to_dict()
+            # Parse lastUpdated
+            last_updated_str = user_data.get('lastUpdated', None)
+            last_updated = datetime.strptime(last_updated_str, "%Y-%m-%dT%H:%M:%S.%f") if last_updated_str else None
+            now = datetime.utcnow()
+
+            reset_daily = False
+            reset_weekly = False
+
+            if last_updated:
+                if last_updated.date() != now.date():
+                    # Different day -> reset daily
+                    daily_time = 0
+                    reset_daily = True
+                if user_data.get('lastWeek', 0) != current_week:
+                    # Different week -> reset weekly
+                    weekly_times = [0, 0, 0, 0, 0, 0, 0]
+                    reset_weekly = True
+
+            update_payload = {
                 'dailyTime': daily_time,
                 'lifetimeTime': lifetime_time,
                 'weeklyTimes': weekly_times,
-                'lastUpdated': datetime.utcnow().isoformat(),
-                'lastWeek': last_week,
+                'lastUpdated': now.isoformat(),
+                'lastWeek': current_week,
                 'gardenName': garden_name
-            })
+            }
+
+            user_doc_ref.update(update_payload)
+
         return jsonify({'success': True}), 200
+
     except Exception as e:
         print(f"Error updating timers: {e}")
         return jsonify({'error': f'Failed to update timers: {str(e)}'}), 500

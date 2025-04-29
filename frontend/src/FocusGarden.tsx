@@ -1,3 +1,4 @@
+// FocusGarden.tsx
 import React, { useState, useEffect, useRef } from 'react';
 import { Flower2, Trophy, Clock } from 'lucide-react';
 import { PlantGrid } from './components/PlantGrid';
