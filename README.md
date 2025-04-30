@@ -1,5 +1,31 @@
 # Focus Garden
 
+## Table of Contents<!-- Optional -->
+<!-- 
+* This section is optional, yet having a contents table 
+* helps keeping your README readable and more professional.
+* 
+* If you are not familiar with HTML, no worries we all been there :D 
+* Review learning resources to create anchor links. 
+-->
+
+    
+<dev align="center">
+    <table align="center">
+        <tr>
+            <td><a href="#about">About</a></td>        
+            <td><a href="#how-to-use-this-project">Getting started</td>
+            <td><a href="#demo">Demo</a></td>
+            <td><a href="#documentation">Documentation</a></td>
+        </tr>
+        <tr>
+            <td><a href="#contributors">Contributors</a></td>
+            <td><a href="#feedback">Feedback</a></td>
+            <td><a href="#contact">Contact</a></td>
+        </tr>
+    </table>
+</dev>
+
 ## About<!-- Required -->
 Created By:
 **Fernando Caudillo Tafoya** (Backend Developer),
@@ -44,35 +70,6 @@ After backend and frontend setup, navigate to the link provided by the frontend.
 ### Main Page
 * Displays user's lifetime screen time, their weekly screen time, and leaderboard featuring top 5 garden's for the day.
 ![Screenshot 2025-04-28 at 6 33 13 PM](https://github.com/user-attachments/assets/d6ed488d-b124-406e-9cd5-d2bdad3b91b0)
-
-
-
-
-## Table of Contents<!-- Optional -->
-<!-- 
-* This section is optional, yet having a contents table 
-* helps keeping your README readable and more professional.
-* 
-* If you are not familiar with HTML, no worries we all been there :D 
-* Review learning resources to create anchor links. 
--->
-
-    
-<dev align="center">
-    <table align="center">
-        <tr>
-            <td><a href="#about">About</a></td>        
-            <td><a href="#how-to-use-this-project">Getting started</td>
-            <td><a href="#demo">Demo</a></td>
-            <td><a href="#documentation">Documentation</a></td>
-        </tr>
-        <tr>
-            <td><a href="#contributors">Contributors</a></td>
-            <td><a href="#feedback">Feedback</a></td>
-            <td><a href="#contact">Contact</a></td>
-        </tr>
-    </table>
-</dev>
 
 
 
@@ -139,4 +136,4 @@ Pull Request Guidelines:
     Fazal Quadri - mquad5@uic.edu
     Helmer Gomez - hgomez
 
-<p align="right"><a href="#how-to-use-this-project">back to top ⬆️</a></p>
+<p align="right"><a href="#about">back to top ⬆️</a></p>
