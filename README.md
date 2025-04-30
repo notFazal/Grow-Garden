@@ -57,55 +57,39 @@ After backend and frontend setup, navigate to the link provided by the frontend.
 * Review learning resources to create anchor links. 
 -->
 
-
+    
 <dev align="center">
     <table align="center">
         <tr>
             <td><a href="#about">About</a></td>        
             <td><a href="#how-to-use-this-project">Getting started</td>
             <td><a href="#demo">Demo</a></td>
-            <td><a href="#project-roadmap--">Project Roadmap</a></td>
             <td><a href="#documentation">Documentation</a></td>
         </tr>
         <tr>
             <td><a href="#contributors">Contributors</a></td>
-            <td><a href="#acknowledgments">Acknowledgments</a></td>
             <td><a href="#feedback">Feedback</a></td>
             <td><a href="#contact">Contact</a></td>
-            <td><a href="#license">License</a></td>
         </tr>
     </table>
 </dev>
 
 
-<!-- - Use this html element to create a back to top button. -->
-<p align="right"><a href="#how-to-use-this-project">back to top ⬆️</a></p>
-
-
-## Project Roadmap <!-- Optional --> <!-- add learning_Rs-->
-<!-- 
-* Add this section in case the project has different phases
-* 
-* Under production or will be updated.
--->
-
-
-<!-- - Use this html element to create a back to top button. -->
-<p align="right"><a href="#how-to-use-this-project">back to top ⬆️</a></p>
-
 
 ## Documentation<!-- Optional -->
 <!-- 
-React.js – Chosen for its component-based structure and  fast updates with virtual DOM for building a dynamic, interactive UI.
-Vite – Used for faster React app setup and development compared to traditional Create-React-App.
-React Router – Used to manage navigation between different pages like Login, Signup, and Main Garden View.
-Backend Framework:
-Flask – Selected because it is lightweight, easy to set up, and perfectly suited for smaller full-stack applications like this one.
-Firebase – Used for authentication and real-time database storage, simplifying user data management without having to manually build complex database servers.
 * 
 * 
 -->
+React.js – Chosen for its component-based structure and  fast updates with virtual DOM for building a dynamic, interactive UI.
 
+Vite – Used for faster React app setup and development compared to traditional Create-React-App.
+
+React Router – Used to manage navigation between different pages like Login, Signup, and Main Garden View.
+
+Flask – Selected because it is lightweight, easy to set up, and perfectly suited for smaller full-stack applications like this one.
+
+Firebase – Used for authentication and real-time database storage, simplifying user data management without having to manually build complex database servers.
 
 ## Contributors<!-- Required -->
 **Fazal Quadri** (Project Lead) - 
@@ -123,24 +107,6 @@ Firebase – Used for authentication and real-time database storage, simplifying
     Built the frontend interface using React, including the daily and weekly garden grids.
     Designed and implemented the login/signup pages, main dashboard, and leaderboard UI.
     Focused on creating a clean, user-friendly experience with a consistent visual style (dark green/brown color palette).
-<!-- 
-
-* Without contribution we wouldn't have open source. 
-* 
-* Generate github contributors Image here https://contrib.rocks/preview?repo=angular%2Fangular-ja
--->
-
-
-## Acknowledgments<!-- Optional -->
-<!-- 
-* Credit where it's do 
-* 
-* Feel free to share your inspiration sources, Stackoverflow questions, github repos, tools etc.
--->
-
-
-<!-- - Use this html element to create a back to top button. -->
-<p align="right"><a href="#how-to-use-this-project">back to top ⬆️</a></p>
 
 
 ## Feedback<!-- Required -->
@@ -151,30 +117,26 @@ Firebase – Used for authentication and real-time database storage, simplifying
 * Also it's common to add some PR guidance.
 -->
 Feel free to open an issue if you find bugs or have suggestions for improvement.
+
 Pull Request Guidelines:
+
     Fork the repository.
+
     Create a new branch (git checkout -b feature/yourFeature).
+
     Commit your changes (git commit -m 'Add your feature').
+
     Push to the branch (git push origin feature/yourFeature).
+
     Open a Pull Request.
-    
+
 ## Contact<!-- Required -->
 <!-- 
 * add your email and contact info here
 * 
-
 -->
     Fernando Caudillo Tafoya - fcaud2@uic.edu
     Fazal Quadri - mquad5@uic.edu
     Helmer Gomez - hgomez
 
-## License<!-- Optional -->
-<!-- 
-* Here you can add project license for copyrights and distribution 
-* 
-* check this website for an easy reference https://choosealicense.com/)
--->
-
-
-<!-- - Use this html element to create a back to top button. -->
 <p align="right"><a href="#how-to-use-this-project">back to top ⬆️</a></p>
