@@ -134,6 +134,6 @@ Pull Request Guidelines:
 -->
     Fernando Caudillo Tafoya - fcaud2@uic.edu
     Fazal Quadri - mquad5@uic.edu
-    Helmer Gomez - hgomez
+    Helmer Gomez - hgomez@uic.edu
 
 <p align="right"><a href="#about">back to top ⬆️</a></p>
