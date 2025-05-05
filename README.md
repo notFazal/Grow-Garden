@@ -29,7 +29,7 @@
 ## About<!-- Required -->
 Created By:
 **Fernando Caudillo Tafoya** (Backend Developer),
-**Fazal Quadri** (Project Lead),
+**Fazal Quadri** (Project Lead/Flex),
 **Helmer Gomez** (Frontend Developer).
 
 This application aims to reduce user's not focusing on what is important. Their garden grows as long as they are on the website and not being distracted on something else. To ensure unique garden names a Bloom Filter is used. For quick and efficient lookup of other users a Trie is used.
@@ -89,7 +89,7 @@ Flask – Selected because it is lightweight, easy to set up, and perfectly suit
 Firebase – Used for authentication and real-time database storage, simplifying user data management without having to manually build complex database servers.
 
 ## Contributors<!-- Required -->
-**Fazal Quadri** (Project Lead) - 
+**Fazal Quadri** (Project Lead/Flex) - 
     Coordinated team meetings, managed project timelines, and ensured milestones were met.
     Took weekly meeting notes and tracked overall project progress.
     Implemented the Trie structure for efficient leaderboard searching.
